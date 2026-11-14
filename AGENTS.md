@@ -35,10 +35,9 @@ does not change them.
 
 ## Current sync
 
-Matches Ready standard 8 as clarified in Ready Room `9be454d` (release
-v00.05.00, schema 2); the template package and JSON Schema were checked
-against the standard 8 loader at Ready Room `8b2f860` (branch
-`sean-cc/ready-8`).
+Matches Ready standard 8 (schema 2) in Ready Room `8444fdb` (release
+v00.15.06): `scripts/check.sh` passes against it, and every validator code the
+loader can raise appears in `references/`.
 
 ## Keeping in sync with Ready Room
 
@@ -70,14 +69,13 @@ Ready Room's schema first.
 - Call the bundle of `.ready` files a Ready Intent Package (spelled out with
   "(RIP)" on first use in each document), then RIP, ready package, or `.ready`
   package.
-- Ready Room's copy of a product's RIP is the "Ready Room RIP" (or "working
-  RIP", "RIP in Ready Room"); the copy in the product's repository is the
-  "repository RIP". Never "cloud RIP".
+- A product's RIP lives in its repository, under `product/`. A person's
+  checkout of it is their working copy, and Ready Room holds a mirror of each
+  working copy that the person's own agent sends. Never "cloud RIP".
 - Ready Room contract names, cited only where needed and exactly as named: the
-  HTTP and MCP tool `read_rip`, message kind `rip_change`, MCP prompt
-  `rip_authoring_guidance`, resource `ready-room://guidance/rip-format`, CLI
-  `rr rip`, plugin skill `rip-authoring`, D1 table `cloud_rip`, and the R2
-  prefix `pip/` (unchanged).
+  MCP prompt `rip_authoring_guidance`, the resource
+  `readyroom://guidance/ready-standard`, the plugin skill `rip-authoring`, and
+  the validator package `@readyroom/ready`.
 
 - Every YAML example that is a whole record (`ready: 2` …) must validate: put new
   ones in the template package or check them in a scratch package with the
@@ -91,4 +89,4 @@ Ready Room's schema first.
 
 ## Commits
 
-Author commits as `Sean Hart <10830846+swabbiedotdev@users.noreply.github.com>`.
+Author commits as `Sean Hart <10830846+swabbieeth@users.noreply.github.com>`.
