@@ -3,7 +3,7 @@
 ## Run it
 
 The validator for a Ready Intent Package (RIP) is Ready Room's loader,
-published as the `@readyroom/ready` package (Node 24 or later; version 1.0
+published as the `@readyroom/ready` package (Node 24 or later; version 1.1
 reads Ready standard 8). `<repo>` is the directory that contains `product/`.
 
 ```sh
@@ -75,22 +75,42 @@ references it then reports `ref.missing`. Work from the top:
     message names the match and where it belongs), `text.id` (a prose field
     names a record by id; link it from the typed field), `text.call` (a
     message's text repeats its `call`), `text.ref-id` (a graph node's text
-    repeats a ref), `summary.missing`, `summary.long`, `name.long`,
+    repeats a ref), `summary.missing`, `summary.long`, `summary.repeats` (say
+    what the record is or does, not its title again), `name.long`,
     `outcome.long`. Fix these by moving the identifier into its typed field
     and writing the sentence in words; see
     [authoring.md](authoring.md#write-for-the-returning-reader). Work
     capability by capability, worst records first, and never satisfy a
     warning by deleting the detail the owner cares about.
-13. **One-home warnings:** `text.history`, `sees.branch`, `sees.platform`,
-    `term.unused`. Move each fact to its home (see
-    [mistakes.md](mistakes.md#one-home-per-fact)): the reason to `rationale`
-    without its date, the condition to an edge's `guard`, the client to
-    `platforms`, the word to `copy`.
-14. **DCL warnings:** `dcl.same` means a capability repeats the product
+13. **Empty screen steps:** `step.empty`. Write what the person sees or does
+    at this moment in `sees` or `does`, or the words they read in `copy`, from
+    the owner's intent, the design, or the product itself. Never invent copy or
+    behavior to silence it: if what the person sees or does is not known, it is
+    a question for the owner, and the warning stays until it is answered.
+14. **One-home warnings:** `text.history`, `sees.branch`, `sees.platform`,
+    `term.unused`, `notes.long`, `column.restates`, `copy.repeated`,
+    `text.repeated`. Move each fact to its home (see
+    [mistakes.md](mistakes.md#one-home-per-fact)):
+    - the reason to `rationale` without its date, the condition to an edge's
+      `guard`, the client to `platforms`, the word to `copy`;
+    - `notes.long`: behavior to its typed fields, long reference prose to a
+      supplementary file, keeping only context and pointers in `notes`;
+    - `column.restates`: nullability, keys, foreign keys, defaults, and checks
+      to their typed column fields, and the `rule` opens with what the column
+      means;
+    - `copy.repeated`: drop the surface's words from the step's `copy` and
+      keep only what this step alone shows;
+    - `text.repeated`: keep the sentence in the record that owns the fact and
+      link that record from the others.
+15. **DCL warnings:** `dcl.same` means a capability repeats the product
     default's level. Remove the capability's duplicate `dcl` so it uses the
     default; a separate basis alone does not justify repeating the level.
-15. **Size warnings:** `size.flow` and `size.sequence`. Split into lettered
-    parts at a phase boundary (see [ids-and-parts.md](ids-and-parts.md#lettered-parts)).
+16. **Size and file warnings:** `size.flow` and `size.sequence`: split into
+    lettered parts at a phase boundary (see
+    [ids-and-parts.md](ids-and-parts.md#lettered-parts)). `record.large`:
+    split the record, or move its long lists and examples to a supplementary
+    file in `files`. `file.unreferenced`: list the file in `files` on the
+    record it supports, or remove it.
 
 Fix the cause, not the symptom: do not satisfy `rule.orphan` by listing the
 rule on an unrelated record, `sequence.unreached` by giving an edge-run
@@ -110,8 +130,12 @@ right. It does not check:
   `home.shared`;
 - that a trigger's name, an edge's guard, and a sequence's outcomes describe
   what really happens;
-- that logic lives in typed fields rather than `notes`;
-- that copy is verbatim, or that a consumer does not restate its owner;
+- that logic lives in typed fields rather than `notes`, beyond the length of
+  `notes`;
+- that copy is verbatim, or that a consumer does not restate its owner in
+  other words: `copy.repeated` and `text.repeated` find only exact repeats;
+- that a record gives every reason it should; a missing `rationale` is not
+  reported, because a reason is never invented to satisfy a check;
 - that the RIP matches the code.
 
 Those are the reviewer's job; see [principles.md](principles.md) and

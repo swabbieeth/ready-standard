@@ -138,7 +138,10 @@ and optional fields; delete them or keep them, as the package prefers.
 Every record: `ready: 2`, `kind`, a lowercase `id` that starts with its
 capability (behavior) or its kind (shared), no unknown fields, no empty
 strings, present tense, no history or task words, a `summary` of one sentence
-of at most 160 characters where the kind has one.
+of at most 160 characters that says more than the title where the kind has
+one, short `notes`, and a source small enough to read; long lists and examples
+go in a supplementary file (limits in
+[format.md](format.md#fields-every-record-has)).
 
 **product** (one, at `product/product.ready`)
 - [ ] `name` (40 characters or fewer), `summary`, `outcome` (300 or fewer),
@@ -183,6 +186,11 @@ of at most 160 characters where the kind has one.
       a full screen.
 - [ ] `copy` quotes exact user-visible words with `{slot}` placeholders;
       `sees`/`does` describe and never invent copy.
+- [ ] A `screen` step says what the person sees or does at this moment in
+      `sees`, `does`, or `copy`; naming its `interface` is not enough
+      (`step.empty`). When that is not known, ask the owner.
+- [ ] Words the surface always shows stay in its `elements`; the step's `copy`
+      holds only what this step alone shows (`copy.repeated`).
 - [ ] `edges` cover every way out, and each names a trigger record; an
       outcome step with no way out has no `edges`. A decision branch has a
       `label`; a condition is a `guard` in plain words, and the rules the move
@@ -286,7 +294,8 @@ of at most 160 characters where the kind has one.
       what one row is.
 - [ ] Only product-significant columns, each with exact `name` and `type`, keys,
       `nullable`, `default`, `values`, and a `rule` for meaning not captured by
-      typed fields.
+      typed fields. The `rule` opens with what the column means, never with
+      "Not null", "PK", or "FK to …" (`column.restates`).
 - [ ] `fk` names an existing column on an existing entity, and each foreign key
       has a `relationships` entry with quoted cardinalities and a `label`.
 - [ ] Each index has one badge `id`, exact `columns`, `where`, `unique`,
@@ -322,6 +331,8 @@ of at most 160 characters where the kind has one.
 
 - Put them in `product/files/` with an allowed extension (`.md .txt .json
   .yaml .yml .ts .sql .csv .svg`) and reference them by full package path
-  (`product/files/save-contract.ts`).
+  (`product/files/save-contract.ts`). Every file is named by the record it
+  supports, in `files`, a `mockup.file`, or a `judge.prompt`
+  (`file.unreferenced`).
 - They hold contracts, prompts, long reference prose, and SVG mockups, never
   logic or a second copy of a record.

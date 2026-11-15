@@ -97,8 +97,33 @@
   160 characters saying what the record is or does; move results to
   `returns`, conditions to the rule's logic, content lists to `elements`, and
   only what has no typed home to `notes`.
+- **A summary that repeats the title** (`summary.repeats`). "Save a note" as
+  the summary of the flow titled "Save a note" tells the reader nothing new.
+  Say in one sentence what the record is or does.
 
 ## One home per fact
+
+- **A screen step with nothing in it** (`step.empty`): a `screen` step that
+  names only its `interface`. The surface is shared by every step that shows
+  it, so the step says what the person sees or does at this moment, in `sees`,
+  `does`, or `copy`. When nobody knows yet, ask the owner; never fill the
+  step with invented copy or behavior.
+- **A surface's words copied onto a step** (`copy.repeated`). A step's `copy`
+  that repeats an element's `copy` on its interface, or an operation error's
+  `copy`. The interface is the home of its words; the step keeps only the copy
+  that this step alone shows.
+- **A column rule that restates its typed fields** (`column.restates`):
+  `rule: Not null. The note's owner.` or `rule: FK to users.id`. Nullability,
+  keys, foreign keys, defaults, and checks go in `nullable`, `keys`, `fk`,
+  `default`, and `check`; the rule starts with what the column means.
+- **The same sentence pasted into many records** (`text.repeated`): a
+  paragraph about a shared policy copied into the rationale of every
+  sequence that follows it. Keep the sentence in the record that owns the fact
+  and link that record from the others (`rules`, `interface`, `invokes`).
+- **Notes that hold the specification** (`notes.long`). Long `notes` are
+  usually behavior a typed field could hold, or reference prose. Move the
+  behavior to its typed fields and long reference prose to a supplementary
+  file, and keep `notes` to context and pointers.
 
 - **Overloaded `sees`.** A step is one moment; a `sees` line stays only when
   it says what the person sees then and no other field holds it. Words on
@@ -139,6 +164,13 @@
   entity that holds the relationship.
 - **Supplementary paths.** `files: [{path: files/x.ts}]` must be
   `product/files/x.ts`, and the extension must be one the loader reads.
+- **A supplementary file no record names** (`file.unreferenced`). A file
+  dropped under `product/files/` and never listed is read by nobody. List it in
+  `files` on the record it supports, or remove it.
+- **One huge record** (`record.large`): an entity, rule, or interface whose
+  source runs past the limit because of long value lists, tables of examples,
+  or reference prose. Split the record, or move the lists and examples to a
+  supplementary file in `files`.
 - **A renamed id with stale citations.** Changing an id or display id without
   updating every record, code comment, and document that cites it. There are
   no old names kept to catch them.
