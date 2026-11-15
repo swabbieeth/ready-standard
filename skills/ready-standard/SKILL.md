@@ -49,7 +49,7 @@ intent.
 - **Plain words first.** Titles, summaries, step text, copy, guards, labels,
   trigger names, and message text carry no identifiers or code vocabulary;
   the identifier goes in its typed field. Every `summary` is one sentence of
-  at most 160 characters. See
+  at most 160 characters that says more than the title. See
   [references/authoring.md](references/authoring.md#write-for-the-returning-reader).
 - **One home per fact.** A fact lives in one record and one field; the rest
   link to it or derive it.

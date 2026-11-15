@@ -122,11 +122,14 @@ always shared.
 | `id` | Lowercase dotted machine id. Never changes. |
 | `display_id` | Stable human id cited in code and tickets, e.g. `FLOW-CREATE`, `SEQ-PREVIEW`, `RULE-COST`. Unique in the package. |
 | `title` or `name` | Plain-words name (which one depends on the kind). |
-| `summary` | One sentence, at most 160 characters. |
+| `summary` | One sentence, at most 160 characters, that says more than the title. |
 | `rationale` | Why it is shaped this way (Markdown). |
-| `notes` | Context: scope, terms, references (Markdown). Never behavior a typed field could hold. |
-| `files` | Supplementary files: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. |
+| `notes` | Context: scope, terms, references (Markdown), at most 700 characters. Never behavior a typed field could hold. |
+| `files` | Supplementary files: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. Every supplementary file is named by some record. |
 | `tags` | `{tag, text}` annotations with no dedicated field. |
+
+A record's source stays within 12,000 characters; long lists and examples go
+in a supplementary file.
 
 ## Ids and display ids
 
@@ -231,7 +234,10 @@ capability from its flow.
     android, web, mobile, desktop), `roles?`;
   - `copy? {title?, body?, actions?, hints?}`, quoted verbatim with `{slot}`
     placeholders;
-  - `sees?` and `does?` (lists), which describe and never quote.
+  - `sees?` and `does?` (lists), which describe and never quote;
+  - a `screen` step has at least one of `sees`, `does`, or `copy`; its
+    `interface` alone does not say what happens at this moment, and words the
+    surface already holds stay on the surface, not in the step's `copy`.
 - **For a lifecycle step:** `description?`, and the entity field and value that
   hold the state (`field?`, `value?`).
 - **For both:** `data? [{entity, access (read, write), state?}]`, where
@@ -308,7 +314,9 @@ edges, so a step lists no sequences.
 
 - `columns [{name, type, keys? (PK, FK, UK), fk? {entity, column, on_delete?,
   on_update?}, nullable?, default?, check?, values?, generated?, visibility?,
-  rule?, indexes? (badges), constants?}]`.
+  rule?, indexes? (badges), constants?}]`. A column's `rule` says what the
+  column means and any rule the typed fields do not capture; it never opens by
+  restating `nullable`, `keys`, `fk`, `default`, or `check`.
 - `column_groups [{name, display_id?, columns, summary?}]` and
   `derivations [{by, columns, text}]` (columns a function computes).
 - `primary_key` is an ordered composite key.
@@ -426,7 +434,8 @@ node stands for or uses, and the node's `text` names them in words.
 
 Text files under `product/` with extensions `.md .txt .json .yaml .yml .ts .sql
 .csv .svg` travel with the package and are referenced from records by package
-path (`product/files/…`) in `files`, `mockup.file`, and `judge.prompt`. Use
+path (`product/files/…`) in `files`, `mockup.file`, and `judge.prompt`; every
+one is named by some record. Use
 them for payload and contract types, model prompts, long reference prose that
 is not one record's rationale, and SVG mockups. Never put logic in them: logic
 stays in records, where it is typed and checked.
@@ -437,7 +446,7 @@ and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
 ## Validation
 
 `npx @readyroom/ready validate <dir>` (where `<dir>` contains `product/`;
-`@readyroom/ready` 1.0 reads standard 8) and Ready Room's viewer run the same
+`@readyroom/ready` 1.1 reads standard 8) and Ready Room's viewer run the same
 loader. It never stops at the first problem: valid records still load, and each
 problem is reported as an error (E) or a warning (W). The command exits
 non-zero when there is any error. How to work through the output is in
@@ -499,3 +508,11 @@ non-zero when there is any error. How to work through the output is in
 | `term.unused` | W | A term's `copy_word` appears in no `copy` in the package. |
 | `size.flow` | W | A flow has more than 12 steps. |
 | `size.sequence` | W | A sequence has more than 16 messages, counted through nested blocks. |
+| `record.large` | W | A record's source is longer than 12,000 characters. |
+| `notes.long` | W | `notes` is longer than 700 characters (trimmed). |
+| `summary.repeats` | W | A `summary` equals the record's `name` or `title`, ignoring case, punctuation, and articles. |
+| `column.restates` | W | A column's `rule` opens by restating a typed field. Always: "Nullable", "Not null", "Non-null" (`nullable`); "Primary key", "PK", "UK" (`keys`); "Foreign key", "FK", or "References" followed by a `table.column` or an arrow (`fk`); "Defaults to", "DEFAULT" (`default`); "CHECK" (`check`). Only standing alone, before the end, a stop, comma, colon, bracket, or arrow: "Required", "Optional" (`nullable`), "Unique" (`keys` or a unique index), "Default" (`default`), "Check" or "Check constraint" (`check`). "PK", "UK", "FK", "DEFAULT", and "CHECK" count in capitals only, so "Check digit used to …" and "Default currency …" are not reported. |
+| `step.empty` | W | A `screen` step has no `sees`, `does`, or `copy` with words in it; an empty `copy`, or one whose lists are empty, does not count, and neither does its `interface` alone. |
+| `copy.repeated` | W | A step's `copy` repeats copy its interface holds: a surface element's `copy` or an operation error's `copy`. |
+| `text.repeated` | W | The same sentence of at least 60 characters is in the prose fields or `rationale` of three or more records; reported on each record after the first. A sentence ends at `.`, `!`, or `?` (with any closing quotes or brackets) before whitespace and a capital or digit; its length is counted as written, whitespace runs as one and the closing stop included; sentences compare ignoring case, whitespace, and the closing stop. Exempt: `copy`, a message's `text` when the message names an `interface` or `invokes`, and a guard when its message or edge names `rules`. The same words in another field of that record still count. |
+| `file.unreferenced` | W | A supplementary file that no record names in `files`, a `mockup.file`, or a `judge.prompt`. |

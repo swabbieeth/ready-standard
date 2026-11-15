@@ -71,7 +71,7 @@ repository is out of date.
 
 A repository with a ready package keeps it at `product/`, starting with
 `product/product.ready`. Validate and export it with the `@readyroom/ready`
-package (Node 24+; version 1.0 reads standard 8):
+package (Node 24+; version 1.1 reads standard 8):
 
 ```sh
 npx @readyroom/ready validate <repo>          # must report 0 errors
