@@ -180,8 +180,9 @@ go in a supplementary file (limits in
 - [ ] `flow`, `title`, and a `step_kind` that fits (no `capability`; a step
       takes its flow's). Every step is a state: `screen` is what the person
       sees, `system` is the app working while the person waits, `decision`
-      is where the product branches on a rule or a result, `outcome` ends,
-      `error` is a visible failure. Avoid `action` in a journey
+      is where the product branches on a rule or a result, `outcome` is a
+      result, good or bad, that may end the journey or lead onward, `error`
+      is a visible failure. Avoid `action` in a journey
       (`step.action`): what the person does is the trigger on an edge.
 - [ ] The `title` names a state, as a noun or a place ("Email settings",
       "Deletion confirmation"), never the move that leaves it: a title that
@@ -189,9 +190,12 @@ go in a supplementary file (limits in
       (`step.trigger-title`).
 - [ ] A person's choice between options (Delete or Keep, Yes or No) is a
       `screen` with one edge per option, each with a person's trigger. A
-      `decision` is named as a question, and its edges carry a `guard` or a
-      sequence `outcome` with an event trigger, never a person's action
-      (`decision.action`).
+      `decision` is named as a question, and every edge leaving it carries a
+      `guard`, a `label`, or a sequence `outcome` (`decision.branch`) with an
+      event trigger, never a person's action (`decision.action`).
+- [ ] Time the person spends away from the app is not a step: it is the gap
+      between two steps, crossed by an edge whose event trigger names what
+      brings them back ("Walk ends").
 - [ ] `interface` names the surface it shows on; `presentation` when it is not
       a full screen.
 - [ ] `copy` quotes exact user-visible words with `{slot}` placeholders;
