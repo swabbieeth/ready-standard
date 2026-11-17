@@ -49,6 +49,23 @@
   or an error step has no edge into it.
 - **A lifecycle copied onto the entity.** The lifecycle is a flow whose
   `subject` is the entity; the entity has no lifecycle or invariants fields.
+- **A step titled as its own move** (`step.trigger-title`): a step "Cast a
+  vote" whose edge's trigger is "Cast vote", so the arrow repeats the box.
+  Boxes are states and arrows are moves: name the step for what the person
+  sees ("Ballot") and leave the verb to the trigger.
+- **An `action` step in a journey** (`step.action`): an action is the edge
+  between two states. Make the step the screen where the person acts, or, for
+  work done off-screen over time, a state such as "Walk in progress".
+- **A person's choice drawn as a decision** (`decision.action`): "Confirm
+  deletion" as a diamond with Delete and Keep branches. That is a confirmation
+  screen with a Delete edge and a Keep edge, each a person's trigger. A
+  `decision` is only where the product branches on a rule or a result, named
+  as a question, with guards or outcomes on its edges.
+- **One trigger both ways** (`edge.both-ways`): "See the leading book" moves
+  from the ballot to the book and back again. Each direction has its own
+  trigger; the way back is "Go back".
+- **A system trigger named as a command.** An `event` or `schedule` trigger is
+  named as the event ("Voting closes"), not as a person's verb.
 
 ## Capabilities and shared records
 
