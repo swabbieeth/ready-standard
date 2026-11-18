@@ -228,6 +228,28 @@ capability from its flow.
   - for a journey: `screen`, `action`, `decision`, `system`, `outcome`,
     `error`;
   - for a lifecycle: `state`, with `initial?` and `final?`.
+- **Every step is a state; its edges are the moves.** A flow diagram reads as
+  boxes that are states and arrows that are what moves the subject on, so a
+  step is named for where the subject is or what it sees, never for what it
+  does. "State" here means a box in the diagram, any step; it is not the
+  `state` step kind, which only lifecycles use. In a journey:
+  - `screen` is what the person sees, named as a noun or a place ("Email
+    settings", "Deletion confirmation"). A person's choice between options is
+    a screen with one edge per option.
+  - `outcome` is a result state, good or bad ("Answer recorded", "Plan
+    inactive"); it may end the journey or lead onward.
+  - `error` is a visible failure the person can see and often recover from.
+  - `system` is the app working while the person waits ("Checking the
+    source").
+  - `decision` is only where the product branches without the person
+    choosing, on a rule or on a sequence's result. It is named as a question
+    ("Over the limit?"). Every edge leaving it carries a `guard`, a `label`,
+    or a sequence `outcome`, and their triggers are events, never a person's
+    action.
+  - `action` is accepted but discouraged: an action is an edge. A journey
+    shows what the person sees; time the person spends away from the app is
+    the gap between two steps, crossed by an edge whose event trigger names
+    what brings them back, such as "Walk ends".
 - **For a journey step:**
   - `interface?` (the surface it shows on), `presentation?` (screen, inline,
     sheet, dialog, toast, email, notification, external), `platforms?` (ios,
@@ -378,6 +400,16 @@ an edge. One trigger can serve several edges: the outcomes of one action, or
 the same button in two flows. The trigger's `name` is the plain words shown on
 the edge.
 
+- A person's trigger (`trigger_kind: action`) is a verb phrase in the person's
+  words: "Delete", "Keep the organization", "Cast vote".
+- A system's trigger (`event`, `schedule`, `call`) is named as the event:
+  "Voting closes", "The daily batch is due".
+- One trigger per direction: a trigger that moves the subject from one step to
+  another does not also move it back; "Go back" is its own trigger.
+- Ready Room draws a person's action as a solid arrow and a system's event,
+  schedule, or call as a dashed one. Only the trigger's kind sets the line;
+  an edge's `channel` shows as a tag on its label.
+
 ### rule
 
 `rule_kind, title, summary`, `capability?` (only when used in one
@@ -475,6 +507,11 @@ non-zero when there is any error. How to work through the output is in
 | `step.flow` | E | A step and its flow disagree. |
 | `step.unreachable` | W | No entry or edge reaches a step. |
 | `step.kind` | E | A journey step is a `state`, or a lifecycle step isn't. |
+| `step.trigger-title` | W | A step's title is the name of a trigger on one of its own edges, ignoring case, punctuation, and articles. The step names the state; the trigger names the move. |
+| `step.action` | W | An `action` step in a journey. Make it a screen whose edge carries the action, or a state for work done off-screen over time. |
+| `decision.action` | W | A decision step has an edge whose trigger is a person's action. A person's choice is a screen with one edge per option. |
+| `edge.both-ways` | W | The same trigger moves the subject both ways between the same two steps. Give each direction its own trigger. Reported once per pair of steps and trigger. |
+| `decision.branch` | W | An edge leaving a decision step has no `guard`, `label`, or `outcome`, so the diagram cannot say which result it follows. |
 | `edge.trigger` | E | An edge has no trigger, or names something that isn't a trigger record. |
 | `edge.sequence` | E | An edge's `outcome` is not one of its sequence's outcomes. |
 | `edge.start` | E | The edges that run one sequence leave different steps or use different triggers. |

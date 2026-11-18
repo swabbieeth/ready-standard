@@ -178,10 +178,24 @@ go in a supplementary file (limits in
 
 **step (journey)**
 - [ ] `flow`, `title`, and a `step_kind` that fits (no `capability`; a step
-      takes its flow's): `screen`
-      shows something, `action` is what the person does, `system` is what the
-      product does, `decision` branches, `outcome` ends, `error` is a visible
-      failure.
+      takes its flow's). Every step is a state: `screen` is what the person
+      sees, `system` is the app working while the person waits, `decision`
+      is where the product branches on a rule or a result, `outcome` is a
+      result, good or bad, that may end the journey or lead onward, `error`
+      is a visible failure. Avoid `action` in a journey
+      (`step.action`): what the person does is the trigger on an edge.
+- [ ] The `title` names a state, as a noun or a place ("Email settings",
+      "Deletion confirmation"), never the move that leaves it: a title that
+      repeats an edge's trigger draws the arrow twice
+      (`step.trigger-title`).
+- [ ] A person's choice between options (Delete or Keep, Yes or No) is a
+      `screen` with one edge per option, each with a person's trigger. A
+      `decision` is named as a question, and every edge leaving it carries a
+      `guard`, a `label`, or a sequence `outcome` (`decision.branch`) with an
+      event trigger, never a person's action (`decision.action`).
+- [ ] Time the person spends away from the app is not a step: it is the gap
+      between two steps, crossed by an edge whose event trigger names what
+      brings them back ("Walk ends").
 - [ ] `interface` names the surface it shows on; `presentation` when it is not
       a full screen.
 - [ ] `copy` quotes exact user-visible words with `{slot}` placeholders;
@@ -195,6 +209,9 @@ go in a supplementary file (limits in
       outcome step with no way out has no `edges`. A decision branch has a
       `label`; a condition is a `guard` in plain words, and the rules the move
       applies are in the edge's `rules`.
+- [ ] Each direction between two steps has its own trigger: the move back is
+      "Go back" or "Cancel", not the trigger that came forward
+      (`edge.both-ways`).
 - [ ] An edge that runs system work names its `sequence` and `outcome`, and
       there is one edge per outcome of that sequence, all from this step with
       the same trigger. Failures reach their own `error` steps that way.
@@ -241,6 +258,9 @@ go in a supplementary file (limits in
 **trigger**
 - [ ] `name` is the plain words shown on the edge; `trigger_kind` is `action`,
       `event`, `schedule`, or `call`.
+- [ ] A person's trigger (`action`) is a verb phrase in the person's words
+      ("Delete", "Cast vote"); a system's trigger (`event`, `schedule`,
+      `call`) is named as the event ("Voting closes").
 - [ ] `actor` names who acts, `interface` where it fires (the surface with the
       button, the webhook operation), `schedule` when it runs on one.
 - [ ] `capability` only when it is used in one capability; one trigger serves

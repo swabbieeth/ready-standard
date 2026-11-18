@@ -2,6 +2,9 @@
 # capability from the flow.
 # Required: ready, kind, id, flow, title,
 #   step_kind (screen | action | decision | system | outcome | error).
+# A step is a state, titled for what the person sees or where they are; the
+#   move out of it is its edge's trigger. Avoid action in a journey, and use
+#   decision only where the product branches on a rule or a result.
 # Optional: edges (a final step has none), interface (the surface it shows on), presentation (screen | inline |
 #   sheet | dialog | toast | email | notification | external), platforms
 #   (ios | android | web | mobile | desktop), roles, copy {title, body,
@@ -16,7 +19,7 @@ ready: 2
 kind: step
 id: notes.write.compose
 flow: notes.write
-title: Write and save a note
+title: Note editor
 step_kind: screen
 interface: interface.editor
 copy:

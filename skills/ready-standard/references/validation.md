@@ -102,10 +102,19 @@ references it then reports `ref.missing`. Work from the top:
       keep only what this step alone shows;
     - `text.repeated`: keep the sentence in the record that owns the fact and
       link that record from the others.
-15. **DCL warnings:** `dcl.same` means a capability repeats the product
+15. **States-and-moves warnings:** `step.trigger-title`, `step.action`,
+    `decision.action`, `decision.branch`, `edge.both-ways`. A flow diagram reads as boxes that
+    are states and arrows that are moves. Rename the step for what the person
+    sees or where they are, and keep the verb on the trigger; turn an `action`
+    step into the screen where the person acts; turn a decision that offers
+    the person a choice into a screen with one edge per option; name each
+    decision branch with a guard, label, or outcome; and give the way back
+    its own trigger. Keep ids stable; change titles and trigger
+    names (see [mistakes.md](mistakes.md#flows-and-edges)).
+16. **DCL warnings:** `dcl.same` means a capability repeats the product
     default's level. Remove the capability's duplicate `dcl` so it uses the
     default; a separate basis alone does not justify repeating the level.
-16. **Size and file warnings:** `size.flow` and `size.sequence`: split into
+17. **Size and file warnings:** `size.flow` and `size.sequence`: split into
     lettered parts at a phase boundary (see
     [ids-and-parts.md](ids-and-parts.md#lettered-parts)). `record.large`:
     split the record, or move its long lists and examples to a supplementary

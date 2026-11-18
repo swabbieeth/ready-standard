@@ -18,9 +18,8 @@ This repository describes Ready standard 8 (schema `ready: 2`).
 ready: 2
 kind: step
 id: notes.write.compose
-capability: notes
 flow: notes.write
-title: Write and save a note
+title: Note editor
 step_kind: screen
 interface: interface.editor
 edges:
