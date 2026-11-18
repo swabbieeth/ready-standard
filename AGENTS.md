@@ -35,8 +35,8 @@ does not change them.
 
 ## Current sync
 
-Matches Ready standard 8 (schema 2) and `@readyroom/ready` 1.1 in Ready Room
-`576079f` (release v00.20.00, swabbieeth/readyroom#188): `scripts/check.sh` passes against it, and every
+Matches Ready standard 8 (schema 2) and `@readyroom/ready` 1.2 in Ready Room
+`35a1145` (release v00.20.00): `scripts/check.sh` passes against it, and every
 validator code the loader can raise appears in `references/`.
 
 ## Keeping in sync with Ready Room

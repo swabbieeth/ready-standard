@@ -3,7 +3,7 @@
 ## Run it
 
 The validator for a Ready Intent Package (RIP) is Ready Room's loader,
-published as the `@readyroom/ready` package (Node 24 or later; version 1.1
+published as the `@readyroom/ready` package (Node 24 or later; version 1.2
 reads Ready standard 8). `<repo>` is the directory that contains `product/`.
 
 ```sh
