@@ -4,11 +4,11 @@
 
 - **Numbers where text is required.** `value: 2000`, `to_card: 1`,
   `params: [{value: 5}]`, a table cell `- 10` all fail as `field.invalid`. Quote
-  them, and quote `format_version: "8.0.0"`. (`status` in `errors` and
+  them, and quote `format_version: "9.0.0"`. (`status` in `errors` and
   `results` is the exception: an integer.)
 - **Unquoted `: ` in text.** `text: Note: retry later` is a YAML error. Quote the
   whole value, or use `>-`.
-- **`ready: 1`.** Standard 8 records are `ready: 2`; anything else is
+- **Wrong `ready` version.** Standard 9 records are `ready: 3`; anything else is
   `record.version`.
 - **Invented fields.** `description` on a flow, `status` on anything,
   `related` on a flow, `sequences` on a step, `steps` on a sequence: all
@@ -171,9 +171,10 @@
 
 - **Referencing by display id.** References take the `id`
   (`rule.generation-cost`). `rules: [RULE-COST]` fails as `field.invalid`.
-- **A step not listed in its flow,** or a flow listing a step that names
-  another flow (`step.flow`). After splitting a flow, each step's `flow` names
-  its part.
+- **A step missing from an explicit `flow.steps` list,** or a flow listing a
+  step that names another flow (`step.flow`). Either keep `flow.steps` aligned
+  with its steps, or omit `flow.steps` and let `step.order` and `id` order
+  them. After splitting a flow, each step's `flow` names its part.
 - **Parts in one direction only.** An overview `parts` entry without the
   part's `part_of`, or the reverse.
 - **Participant keys.** A message `from: API` when the participant is listed as

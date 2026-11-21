@@ -1,5 +1,5 @@
 # Template: trigger for a lifecycle transition.
-ready: 2
+ready: 3
 kind: trigger
 id: notes.delete-note
 display_id: TRIG-DELETE-NOTE

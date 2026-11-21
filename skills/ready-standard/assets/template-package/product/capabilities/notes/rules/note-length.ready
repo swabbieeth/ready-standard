@@ -11,7 +11,7 @@
 # A decision or policy rule must be applied through the rules field of a
 # step, an edge, a sequence message, or another rule; a policy also by its
 # own sequence.
-ready: 2
+ready: 3
 kind: rule
 id: notes.note-length
 display_id: RULE-NOTE-LENGTH

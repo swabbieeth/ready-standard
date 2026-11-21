@@ -1,21 +1,24 @@
-# Template: journey step. Its flow must list it in steps; it takes its
-# capability from the flow.
+# Template: journey step. When its flow lists steps, it must appear there;
+# otherwise order (integer) sets its display position. Takes capability from flow.
 # Required: ready, kind, id, flow, title,
-#   step_kind (screen | action | decision | system | outcome | error).
-# A step is a state, titled for what the person sees or where they are; the
-#   move out of it is its edge's trigger. Avoid action in a journey, and use
-#   decision only where the product branches on a rule or a result.
-# Optional: edges (a final step has none), interface (the surface it shows on), presentation (screen | inline |
-#   sheet | dialog | toast | email | notification | external), platforms
-#   (ios | android | web | mobile | desktop), roles, copy {title, body,
-#   actions, hints}, sees, does, data [{entity, access (read | write), state
-#   (the id of a state step in that entity's lifecycle)}], rules.
+#   step_kind (screen | task | approval | action | decision | system | outcome | error).
+# A step is a state, titled for what the subject sees or where work sits; the
+#   move out of it is its edge's trigger. Use task for work without a UI screen
+#   and approval for an explicit review or sign-off gate. Avoid action in a
+#   journey, and use decision only where the product branches on a rule or result.
+# Optional: order (integer), owner (actor or system id), edges (a final step
+#   has none), interface (the surface it shows on), presentation (screen |
+#   inline | sheet | dialog | toast | email | notification | external),
+#   platforms (ios | android | web | mobile | desktop), roles, copy {title,
+#   body, actions, hints}, sees, does, data [{entity, access (read | write),
+#   state (the id of a state step in that entity's lifecycle)}], rules.
 # Edges: [{to (a step, or $return), trigger (a trigger id, always), guard
 #   (plain words), rules, label, sequence, outcome, channel (email | push |
-#   async | link), platforms, roles}]. The edges that run one sequence leave this step with one trigger,
-#   one edge per outcome.
+#   async | link | handoff), to_actor (intended actor id on handoff),
+#   platforms, roles, secondary (true)}]. The edges that run one sequence leave
+#   this step with one trigger, one edge per outcome.
 # copy quotes user-visible words verbatim; sees and does describe.
-ready: 2
+ready: 3
 kind: step
 id: notes.write.compose
 flow: notes.write

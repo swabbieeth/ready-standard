@@ -1,9 +1,11 @@
-# Template: lifecycle step. Its flow must list it in steps.
+# Template: lifecycle step. When its flow lists steps, it must appear there;
+# otherwise order (integer) sets its display position.
 # Required: ready, kind, id, flow, title, step_kind (state).
-# Optional: edges, initial, final, description, field and value (the entity
-#   field and value that hold the state), data [{entity, access, state}], rules.
+# Optional: order, edges, initial, final, description, field and value (the
+#   entity field and value that hold the state), data [{entity, access, state}],
+#   rules.
 # Edges are the transitions, with the same fields as a journey's edges.
-ready: 2
+ready: 3
 kind: step
 id: notes.note.saved
 flow: notes.note

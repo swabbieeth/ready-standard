@@ -6,7 +6,7 @@
 #   cli_command | webhook | function), params [{name, type, source}], returns,
 #   errors [{code, status, when, copy}], http {method, path}, auth.
 # Payload types go in a supplementary file listed in files (role: contract).
-ready: 2
+ready: 3
 kind: interface
 id: interface.save-note
 display_id: IF-SAVE-NOTE

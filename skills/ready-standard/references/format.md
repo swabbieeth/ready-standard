@@ -1,4 +1,4 @@
-# The `.ready` format (Ready standard 8, schema 2)
+# The `.ready` format (Ready standard 9, schema 3)
 
 This is the canonical specification of the `.ready` standard in this
 repository. It follows Ready Room's schema, `app/src/shared/intent/types.ts`
@@ -9,9 +9,12 @@ The generated JSON Schema ships with this skill at
 completion; `npx @readyroom/ready schema` prints the current one.
 
 A Ready Intent Package (RIP) describes a product as it is meant to be, as a
-graph of typed records. Each record is one YAML file ending in `.ready` under
-`product/`. Records refer to each other by `id`. Every diagram, outline,
-export, and diff is derived from the records; nothing visual is stored.
+graph of typed records keyed by `id`. Ready Room stores and validates records
+natively in a room's SQLite store (`loadRecords`) and serializes the same graph
+deterministically to one `.ready` YAML file per record under `product/`
+(`canonicalRecordPath`, `serializeRecord`, `serializeModel`). Records refer to
+each other by `id`. Every diagram, outline, export, and diff is derived from
+the records; nothing visual is stored.
 
 ## The model
 
@@ -74,7 +77,12 @@ subject ends up.
 7. **One way to say each thing.** Where two fields could hold the same fact, the
    format keeps one, and the other is derived.
 
-## Package layout
+## Record-first storage and package layout
+
+The canonical unit of a RIP is a typed record keyed by `id`. Ready Room loads
+records directly from structured JSON (`loadRecords`) or from `.ready` YAML
+files under `product/` (`loadModel`), and projects any record graph back to
+deterministic `.ready` file paths (`canonicalRecordPath` / `serializeModel`):
 
 ```
 product/
@@ -96,10 +104,10 @@ product/
   files/…                                              supplementary files
 ```
 
-Folders are a convention for people. The loader reads every `.ready` file under
-`product/` (any depth) and ignores folder names. A record's kind comes from its
-`kind` field, and its home from its fields: flows and sequences name their
-`capability`, and a step takes its capability from its flow; a rule or
+Folders are a convention for people. The file loader reads every `.ready` file
+under `product/` (any depth) and ignores folder names. A record's kind comes
+from its `kind` field, and its home from its fields: flows and sequences name
+their `capability`, and a step takes its capability from its flow; a rule or
 trigger names one only when it is used in one capability; every other kind is
 always shared.
 
@@ -108,7 +116,7 @@ always shared.
 - One mapping per file. Duplicate keys are a parse error.
 - Every text field is a non-empty string after trimming. Quote values YAML
   would read as numbers or booleans when the field is text: `value: "2000"`,
-  `to_card: "1"`, `format_version: "8.0.0"`.
+  `to_card: "1"`, `format_version: "9.0.0"`.
 - Quote any plain scalar that contains `: ` or starts with `{`, `[`, `*`, `&`,
   `!`, `|`, `>`, `'`, `"`, `%`, or `@`.
 - Unknown fields are errors at every level (every object is strict).
@@ -117,7 +125,7 @@ always shared.
 
 | Field | Meaning |
 | --- | --- |
-| `ready` | Schema version; always `2`. `ready: 1` is a load error. |
+| `ready` | Schema version; always `3`. Any other value is a load error. |
 | `kind` | Record kind (below). |
 | `id` | Lowercase dotted machine id. Never changes. |
 | `display_id` | Stable human id cited in code and tickets, e.g. `FLOW-CREATE`, `SEQ-PREVIEW`, `RULE-COST`. Unique in the package. |
@@ -172,9 +180,15 @@ may point at are checked (`ref.kind`).
 
 Exactly one, at `product/product.ready`: `name` (at most 40 characters),
 `summary`, `outcome` (at most 300 characters), `release?`,
-`format_version: "8.0.0"`, `boundary? {text?, includes?, excludes?}`,
-`exclusions?`, `measures?`, `dcl? {level (integer 1–10), basis}`. This optional
-Development Complexity Level is the product default.
+`format_version: "9.0.0"`, `domain?` (open-ended string such as `product`,
+`operations`, `personal`, or any custom vertical), `template?` (optional
+starter template identifier), `labels?` (open-ended `{key: label}` map of room
+vocabulary overrides that travel with the package), `boundary? {text?,
+includes?, excludes?}`, `exclusions?`, `measures?`, `dcl? {level (integer
+1–10), basis}`. Because `domain`, `template`, and `labels` are open-ended
+strings and maps rather than closed enums, new templates and domains plug in
+without changing the standard. `dcl` is the optional product default
+Development Complexity Level.
 
 ### capability
 
@@ -204,8 +218,9 @@ response time or loss limit, are quality rules, not DCL.
 
 ### flow
 
-`capability, title, summary, subject, steps` (ordered), `entries?`, `parts?`,
-`part_of?`.
+`capability, title, summary, subject`, `steps?` (ordered; when omitted, derived
+from steps whose `flow` names this flow, sorted by `step.order` then `id`),
+`entries?`, `parts?`, `part_of?`.
 
 - **`subject`** is an actor id or an entity id. An actor makes the flow a
   **journey**; an entity makes it a **lifecycle**. Journey and lifecycle are
@@ -221,21 +236,27 @@ response time or loss limit, are quality rules, not DCL.
 
 ### step
 
-`flow, title, step_kind, edges?`, plus fields by subject. A step takes its
-capability from its flow.
+`flow, title, step_kind, order?, edges?`, plus fields by subject. A step takes
+its capability from its flow.
 
 - **`step_kind`:**
-  - for a journey: `screen`, `action`, `decision`, `system`, `outcome`,
-    `error`;
+  - for a journey: `screen`, `task`, `approval`, `action`, `decision`,
+    `system`, `outcome`, `error`;
   - for a lifecycle: `state`, with `initial?` and `final?`.
 - **Every step is a state; its edges are the moves.** A flow diagram reads as
   boxes that are states and arrows that are what moves the subject on, so a
   step is named for where the subject is or what it sees, never for what it
   does. "State" here means a box in the diagram, any step; it is not the
   `state` step kind, which only lifecycles use. In a journey:
-  - `screen` is what the person sees, named as a noun or a place ("Email
-    settings", "Deletion confirmation"). A person's choice between options is
-    a screen with one edge per option.
+  - `screen` is what the person sees on a UI surface, named as a noun or a
+    place ("Email settings", "Deletion confirmation"). A person's choice
+    between options is a screen with one edge per option.
+  - `task` is a human or agent work stage that needs no dedicated UI screen
+    (for example, a delegated agent task or field-crew visit). It may name
+    its `owner` (actor or system id) and describe work in `does`.
+  - `approval` is an explicit human review or sign-off gate before work
+    proceeds (for example, manager variance review or external-action
+    approval). It may name its `owner` (actor or system id).
   - `outcome` is a result state, good or bad ("Answer recorded", "Plan
     inactive"); it may end the journey or lead onward.
   - `error` is a visible failure the person can see and often recover from.
@@ -247,11 +268,12 @@ capability from its flow.
     or a sequence `outcome`, and their triggers are events, never a person's
     action.
   - `action` is accepted but discouraged: an action is an edge. A journey
-    shows what the person sees; time the person spends away from the app is
-    the gap between two steps, crossed by an edge whose event trigger names
-    what brings them back, such as "Walk ends".
+    shows where the subject is; time spent away is the gap between two steps,
+    crossed by an edge whose event trigger names what brings them back, such
+    as "Walk ends".
 - **For a journey step:**
-  - `interface?` (the surface it shows on), `presentation?` (screen, inline,
+  - `owner?` (actor or system id responsible for completing the step),
+    `interface?` (the surface it shows on), `presentation?` (screen, inline,
     sheet, dialog, toast, email, notification, external), `platforms?` (ios,
     android, web, mobile, desktop), `roles?`;
   - `copy? {title?, body?, actions?, hints?}`, quoted verbatim with `{slot}`
@@ -262,11 +284,12 @@ capability from its flow.
     surface already holds stay on the surface, not in the step's `copy`.
 - **For a lifecycle step:** `description?`, and the entity field and value that
   hold the state (`field?`, `value?`).
-- **For both:** `data? [{entity, access (read, write), state?}]`, where
+- **For both:** `order?` (integer; optional display order when the parent flow
+  omits `steps`), `data? [{entity, access (read, write), state?}]`, where
   `state` is the id of a `state` step in that entity's lifecycle; `rules?`.
 - **`edges`** (optional; a final step has none) are `[{to | $return, trigger,
   guard?, rules?, label?, sequence?, outcome?, channel? (email, push, async,
-  link), platforms?, roles?, secondary?}]`:
+  link, handoff), to_actor?, platforms?, roles?, secondary?}]`:
   - `to` is a step, or `$return` to send the subject back where the flow
     began.
   - `trigger` is a trigger id. Every edge names a trigger record.
@@ -274,6 +297,9 @@ capability from its flow.
     its outcomes leads to `to`. The edges that share a sequence all leave the
     same step with the same trigger, one per outcome.
   - A move with no system work has no `sequence`.
+  - `channel` marks a cross-channel move (`email`, `push`, `async`, `link`, or
+    `handoff`); `to_actor` (actor id) names the intended recipient role on a
+    handoff.
   - `label` marks a decision branch ("Yes", "No"); `guard` states, in plain
     words, the condition under which the edge is taken; `rules` lists the
     rules the move applies.
@@ -431,8 +457,10 @@ its own `sequence`. Quality and invariant rules apply through their
 ### actor
 
 `name, description?, goal?, side` (person, operator, agent, third_party,
-product), `connections? [{to (system or actor), label?, direction? (to,
-both)}]` for an actor's own links on the system map.
+product), `autonomy?` (autonomous, escalate_external, approval_required,
+advisory — default operating boundary for an actor or agent), `systems?`
+(system ids this actor operates in), `connections? [{to (system or actor),
+label?, direction? (to, both)}]` for an actor's own links on the system map.
 
 ### system
 
@@ -477,18 +505,21 @@ and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
 
 ## Validation
 
-`npx @readyroom/ready validate <dir>` (where `<dir>` contains `product/`;
-`@readyroom/ready` 1.1 reads standard 8) and Ready Room's viewer run the same
-loader. It never stops at the first problem: valid records still load, and each
-problem is reported as an error (E) or a warning (W). The command exits
-non-zero when there is any error. How to work through the output is in
-[validation.md](validation.md).
+`npx @readyroom/ready validate <dir>` (where `<dir>` contains `product/`) and
+Ready Room's viewer run the same loader. It supports two profiles: `strict`
+(default, used by `ready validate` and CI: runs all schema, reference,
+completeness, and editorial checks) and `integrity` (runs structural and
+graph-integrity errors only, omitting editorial warnings for incremental
+authoring). The loader never stops at the first problem: valid records still
+load, and each problem is reported as an error (E) or a warning (W). The
+command exits non-zero when there is any error. How to work through the output
+is in [validation.md](validation.md).
 
 | Code | Sev. | Meaning |
 | --- | --- | --- |
 | `yaml.parse` | E | Not valid YAML (including duplicate keys). |
 | `record.shape` | E | The file is not one mapping. |
-| `record.version` | E | `ready` is not `2`. |
+| `record.version` | E | `ready` is not `3`. |
 | `record.kind` | E | Unknown `kind`. |
 | `record.id` | E | `id` missing or not a lowercase dotted id. |
 | `field.invalid` | E | A field has the wrong type or value. |

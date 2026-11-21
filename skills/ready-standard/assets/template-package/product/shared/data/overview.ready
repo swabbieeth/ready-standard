@@ -2,7 +2,7 @@
 # data diagrams use parts / part_of.
 # Required: ready, kind, id, title, entities.
 # Optional: summary, diagram {nodes, edges}, parts / part_of.
-ready: 2
+ready: 3
 kind: data_group
 id: data.overview
 display_id: DATA-OVERVIEW

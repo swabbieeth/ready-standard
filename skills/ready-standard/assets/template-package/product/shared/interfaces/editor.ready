@@ -6,7 +6,7 @@
 #   email | notification | provider), parent, route, platforms,
 #   elements [{name, description, states, copy}], states,
 #   mockup {url | file, frame, version} (the binding design target).
-ready: 2
+ready: 3
 kind: interface
 id: interface.editor
 display_id: IF-EDITOR

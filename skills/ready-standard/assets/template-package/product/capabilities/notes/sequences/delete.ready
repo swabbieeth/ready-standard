@@ -1,6 +1,6 @@
 # Template: sequence with one outcome, run by a lifecycle edge. It reaches
 # that outcome at the end of its items.
-ready: 2
+ready: 3
 kind: sequence
 id: notes.delete
 display_id: SEQ-DELETE

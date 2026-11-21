@@ -13,7 +13,7 @@
 #   rules, constants, results [{status, code, copy, when}], timeout, retry,
 #   idempotency, note, tags.
 # Split a sequence over 16 messages into lettered parts.
-ready: 2
+ready: 3
 kind: sequence
 id: notes.save
 display_id: SEQ-SAVE

@@ -1,6 +1,6 @@
 # Template: flow with an entity subject, shown as a lifecycle. Same fields as a
 # journey; its steps are states (step_kind state).
-ready: 2
+ready: 3
 kind: flow
 id: notes.note
 display_id: FLOW-NOTE

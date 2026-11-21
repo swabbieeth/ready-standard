@@ -13,7 +13,7 @@
 #   capability that needs a shared index), unique, method, columns, include,
 #   where, params, definition, serves (sequences).
 # Quote cardinalities: to_card: "1".
-ready: 2
+ready: 3
 kind: entity
 id: data.notes
 display_id: DATA-NOTES

@@ -15,12 +15,12 @@ Changes to a Ready Intent Package (RIP) follow one workflow.
 3. **Edit the owning record.** Change behavior where it lives; add or update
    links (`interface`, `invokes`, `rules`, `relationships`, edges) from
    consumers. Do not copy the owner's content into consumers.
-4. **Keep the graph whole.** A new step is listed in its flow and reached by an
-   entry or an edge; every new edge names a trigger record; a new sequence
-   outcome is mapped by an edge; a new decision rule has an applier; a new
-   interface is shown or called; an entity column a sequence uses exists on
-   the entity. Remove a record only after removing or redirecting every
-   reference to it.
+4. **Keep the graph whole.** A new step points at its flow (and is listed in
+   `flow.steps` when the flow declares `steps`) and is reached by an entry or
+   an edge; every new edge names a trigger record; a new sequence outcome is
+   mapped by an edge; a new decision rule has an applier; a new interface is
+   shown or called; an entity column a sequence uses exists on the entity.
+   Remove a record only after removing or redirecting every reference to it.
 5. **Check what consumers rely on.** If the change alters what an interface or
    shared sequence promises (result meaning, refusals, atomicity, idempotency,
    privacy, retention), find and review every consumer, linked or not, even
@@ -135,7 +135,7 @@ and optional fields; delete them or keep them, as the package prefers.
 
 ## Per-kind checklist
 
-Every record: `ready: 2`, `kind`, a lowercase `id` that starts with its
+Every record: `ready: 3`, `kind`, a lowercase `id` that starts with its
 capability (behavior) or its kind (shared), no unknown fields, no empty
 strings, present tense, no history or task words, a `summary` of one sentence
 of at most 160 characters that says more than the title where the kind has
@@ -145,7 +145,10 @@ go in a supplementary file (limits in
 
 **product** (one, at `product/product.ready`)
 - [ ] `name` (40 characters or fewer), `summary`, `outcome` (300 or fewer),
-      `format_version: "8.0.0"`.
+      `format_version: "9.0.0"`.
+- [ ] Optional `domain` (open-ended, e.g. `product`, `operations`, `personal`),
+      `template` (optional starter template identifier), and `labels`
+      (`{key: label}` vocabulary overrides that travel with the package).
 - [ ] `boundary` (what this release includes and excludes), `exclusions`,
       `measures`.
 - [ ] `release` matches the version the RIP describes, if the repository uses one.
@@ -167,7 +170,9 @@ go in a supplementary file (limits in
 **flow**
 - [ ] `capability`, `title`, `summary`, and a `subject`: an actor for a
       journey, an entity for a lifecycle.
-- [ ] `steps` in order, each step's `flow` naming this flow (or its part).
+- [ ] Either list `steps` in order (each step's `flow` naming this flow or its
+      part), or omit `steps` so the loader derives step order from `step.order`
+      then `step.id`.
 - [ ] `entries` say where the subject comes in from, with `to` a step of this
       flow and `from` a step in another flow when there is one, so the first
       step is reachable.
@@ -179,11 +184,16 @@ go in a supplementary file (limits in
 **step (journey)**
 - [ ] `flow`, `title`, and a `step_kind` that fits (no `capability`; a step
       takes its flow's). Every step is a state: `screen` is what the person
-      sees, `system` is the app working while the person waits, `decision`
+      sees on a UI surface, `task` is a human or agent work stage with no
+      dedicated screen, `approval` is an explicit human review or sign-off
+      gate, `system` is the app working while the person waits, `decision`
       is where the product branches on a rule or a result, `outcome` is a
       result, good or bad, that may end the journey or lead onward, `error`
       is a visible failure. Avoid `action` in a journey
       (`step.action`): what the person does is the trigger on an edge.
+- [ ] Optional `owner` names the `actor` or `system` responsible for completing
+      a `task`, `approval`, or other journey step; optional `order` (integer)
+      sets its display position when the parent flow omits `steps`.
 - [ ] The `title` names a state, as a noun or a place ("Email settings",
       "Deletion confirmation"), never the move that leaves it: a title that
       repeats an edge's trigger draws the arrow twice
@@ -208,7 +218,8 @@ go in a supplementary file (limits in
 - [ ] `edges` cover every way out, and each names a trigger record; an
       outcome step with no way out has no `edges`. A decision branch has a
       `label`; a condition is a `guard` in plain words, and the rules the move
-      applies are in the edge's `rules`.
+      applies are in the edge's `rules`. Use `channel: handoff` and `to_actor`
+      when handing work off across a channel to another actor or agent role.
 - [ ] Each direction between two steps has its own trigger: the move back is
       "Go back" or "Cancel", not the trigger that came forward
       (`edge.both-ways`).
@@ -225,7 +236,8 @@ go in a supplementary file (limits in
 
 **step (lifecycle)**
 - [ ] `step_kind: state`; one state is `initial`, and the states it ends in are
-      `final`, with no `edges`.
+      `final`, with no `edges`. Optional `order` sets its position when the
+      parent flow omits `steps`.
 - [ ] `field` and `value` name the entity column and value that hold the state,
       when one does.
 - [ ] Each transition is an edge with a trigger, and with the `sequence` and
@@ -332,8 +344,10 @@ go in a supplementary file (limits in
 
 **actor / system**
 - [ ] Actor `side` set (`person`, `operator`, `agent`, `third_party`,
-      `product`); `goal` in the actor's terms. An agent that acts for someone
-      is an actor with `side: agent`.
+      `product`); `goal` in the actor's terms; optional `autonomy`
+      (`autonomous`, `escalate_external`, `approval_required`, `advisory`) and
+      `systems` (system ids this actor operates in). An agent that acts for
+      someone is an actor with `side: agent`.
 - [ ] System `role`, `system_kind`, `within` (its host), and `connections`
       with labels; `secrets` are names only.
 

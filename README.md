@@ -1,21 +1,23 @@
 # Ready standard
 
 The `.ready` standard writes a product's intent as a **Ready Intent Package
-(RIP)**, or ready package: a `product/` directory of typed YAML records. The
-product is organized into capabilities, outcomes some actor gets. Each
-capability draws its behavior as flows (journeys for people, lifecycles for
-records) whose edges name the trigger that takes them and the sequence they
-run, plus the rules used only there. Data, interfaces, actors, systems, and
-anything several capabilities use are shared and defined once. Records link
-to each other by id, so the package is a graph that software can check and
-render: Ready Room draws every flow, sequence, and data diagram from the
-records, and its validator checks every reference.
+(RIP)**, or ready package: a graph of typed records keyed by `id`, stored
+natively in a Ready Room room or serialized as `.ready` YAML files under a
+repository's `product/` directory. The product is organized into capabilities,
+outcomes some actor gets. Each capability draws its behavior as flows (journeys
+for people and agents, lifecycles for records) whose edges name the trigger
+that takes them and the sequence they run, plus the rules used only there.
+Data, interfaces, actors, systems, and anything several capabilities use are
+shared and defined once. Records link to each other by id, so the package is a
+graph that software can check and render: Ready Room draws every flow,
+sequence, and data diagram from the records, and its validator checks every
+reference.
 
-This repository describes Ready standard 8 (schema `ready: 2`).
+This repository describes Ready standard 9 (schema `ready: 3`).
 
 ```yaml
 # product/capabilities/notes/flows/write/compose.ready
-ready: 2
+ready: 3
 kind: step
 id: notes.write.compose
 flow: notes.write
@@ -70,7 +72,7 @@ repository is out of date.
 
 A repository with a ready package keeps it at `product/`, starting with
 `product/product.ready`. Validate and export it with the `@readyroom/ready`
-package (Node 24+; version 1.2 reads standard 8):
+package (Node 24+):
 
 ```sh
 npx @readyroom/ready validate <repo>          # must report 0 errors

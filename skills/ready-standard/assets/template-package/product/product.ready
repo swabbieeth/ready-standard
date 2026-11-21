@@ -1,19 +1,22 @@
 # Template: product. Exactly one per package, at product/product.ready.
 # Required: ready, kind, id, name (at most 40 characters), summary,
-#   outcome (at most 300 characters), format_version ("8.0.0").
-# Optional: release, boundary {text, includes, excludes}, exclusions,
+#   outcome (at most 300 characters), format_version ("9.0.0").
+# Optional: release, domain (open-ended, e.g. product, operations, personal),
+#   template (optional starter template identifier), labels ({key: label}
+#   vocabulary overrides), boundary {text, includes, excludes}, exclusions,
 #   measures, dcl {level 1-10, basis}, plus the common fields
 #   (display_id, rationale, notes, files, tags).
 # dcl is the optional default; a capability can set its own.
 # Keep it outward-facing: no rules, gates, or algorithms here.
-ready: 2
+ready: 3
 kind: product
 id: product
 name: Example Notes
 summary: A web app where people keep short private notes.
 outcome: People keep short notes they can find again on any device.
 release: v00.01.00
-format_version: "8.0.0"
+format_version: "9.0.0"
+domain: product
 boundary:
   text: A web app where signed-in people write, list, and delete their own notes.
 exclusions:

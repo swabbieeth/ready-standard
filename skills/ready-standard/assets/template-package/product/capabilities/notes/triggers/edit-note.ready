@@ -1,5 +1,5 @@
 # Template: trigger for a move with no system work.
-ready: 2
+ready: 3
 kind: trigger
 id: notes.edit-note
 display_id: TRIG-EDIT-NOTE

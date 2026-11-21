@@ -1,5 +1,5 @@
 # Template: final lifecycle state (no edges).
-ready: 2
+ready: 3
 kind: step
 id: notes.note.deleted
 flow: notes.note

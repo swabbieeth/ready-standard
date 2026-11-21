@@ -9,8 +9,10 @@ record kind.
 - The canonical RIP is `product/` on the repository's canonical branch. It
   states what the product is meant to be, in the present tense. It may lead the
   code: present tense is not a claim that the implementation matches.
-- No status, readiness, proposal, signoff, review, or handoff fields, and none
-  smuggled into `tags` or `notes`. Git records history.
+- No document-status, readiness, proposal, signoff, review, or ticket-handoff
+  metadata, and none smuggled into `tags` or `notes`. (Runtime approval gates
+  and actor handoffs belong in typed `approval` steps and `handoff` edges when
+  they are part of the intended workflow.) Git records history.
 - No task or construction language anywhere, including `text`, `label`,
   `notes`, and `copy`: not "will add", "replace the old", "migrate", or "now".
   Ask of an imperative: after it is done once, does it still govern the next

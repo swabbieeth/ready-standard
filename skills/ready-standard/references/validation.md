@@ -3,15 +3,19 @@
 ## Run it
 
 The validator for a Ready Intent Package (RIP) is Ready Room's loader,
-published as the `@readyroom/ready` package (Node 24 or later; version 1.2
-reads Ready standard 8). `<repo>` is the directory that contains `product/`.
+published as the `@readyroom/ready` package (Node 24 or later). `<repo>` is the
+directory that contains `product/`.
 
 ```sh
 npx @readyroom/ready validate <repo>
 ```
 
 Inside a Ready Room checkout, `npm run ready -- validate <repo>` runs the same
-code from source; Ready Room validates its own package that way.
+code from source; Ready Room validates its own package that way. The CLI runs
+the `strict` validation profile (all schema, graph, completeness, and editorial
+checks). Ready Room's programmatic loader (`loadRecords` / `loadModel`) also
+supports an `integrity` profile that runs structural and graph-integrity errors
+only during incremental authoring.
 
 Output is one line per issue, then a summary:
 
@@ -34,7 +38,7 @@ references it then reports `ref.missing`. Work from the top:
 
 1. **File problems:** `yaml.parse`, `record.shape`, `record.version`,
    `record.kind`, `record.id`. Usually unquoted `: ` in text, a tab, a
-   duplicate key, or `ready` not `2`.
+   duplicate key, or `ready` not `3`.
 2. **Field problems:** `field.invalid`, `field.unknown`, `interface.fields`.
    Check the field against [format.md](format.md) or
    `npx @readyroom/ready schema`. Common causes: a number where text is

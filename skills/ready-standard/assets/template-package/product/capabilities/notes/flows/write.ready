@@ -1,12 +1,12 @@
 # Template: flow with an actor subject, shown as a journey.
 # Required: ready, kind, id, capability, title, summary,
-#   subject (an actor id here; an entity id makes a lifecycle),
-#   steps (ordered; empty only on an overview with parts).
-# Optional: entries [{label, from (a step in another flow), to (a step in this
-#   flow), trigger}], parts / part_of.
+#   subject (an actor id here; an entity id makes a lifecycle).
+# Optional: steps (ordered; when omitted, derived from steps whose flow names
+#   this flow, sorted by step.order then id), entries [{label, from (a step in
+#   another flow), to (a step in this flow), trigger}], parts / part_of.
 # Flow links are derived from entries, shared edge sequences, and data states.
 # Split a flow over 12 steps into lettered parts.
-ready: 2
+ready: 3
 kind: flow
 id: notes.write
 display_id: FLOW-WRITE

@@ -6,17 +6,18 @@ description: Read, write, change, validate, or audit a Ready Intent Package (RIP
 # Ready standard
 
 A Ready Intent Package (RIP) is the product's current intended end state,
-written as a graph of typed records under `product/`, one YAML file per
-record. The product is organized into capabilities, outcomes some actor gets.
-Each capability draws its behavior as flows (journeys for people, lifecycles
-for records), the sequences that run between their steps, and the rules used
-only there. Data, interfaces, actors, systems, triggers, shared rules,
-constants, and terms are shared and defined once. Records refer to each other
-by `id`; every diagram, outline, and export is derived from them.
+written as a graph of typed records keyed by `id`: stored natively as structured
+records in a Ready Room room or serialized as one `.ready` YAML file per record
+under `product/`. The product is organized into capabilities, outcomes some
+actor gets. Each capability draws its behavior as flows (journeys for people
+and agents, lifecycles for records), the sequences that run between their steps,
+and the rules used only there. Data, interfaces, actors, systems, triggers,
+shared rules, constants, and terms are shared and defined once. Records refer to
+each other by `id`; every diagram, outline, and export is derived from them.
 
 Ready Room's schema (`app/src/shared/intent/types.ts`) is authoritative for
 every field. [references/format.md](references/format.md) is the readable
-specification of Ready standard 8: layout, kinds, fields, ids, and validator
+specification of Ready standard 9: layout, kinds, fields, ids, and validator
 codes. Never invent a field; if something has no home, it goes in `notes`,
 `rationale`, `tags`, or a supplementary file, or the owner adds a field to the
 schema.

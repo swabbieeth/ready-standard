@@ -1,7 +1,7 @@
 # Template: rule (rule_kind quality). Shared, because it constrains a shared
 # interface whichever capability calls it. A quality rule applies through
 # applies_to (flows, sequences, or interfaces).
-ready: 2
+ready: 3
 kind: rule
 id: rule.save-time
 display_id: RULE-SAVE-TIME

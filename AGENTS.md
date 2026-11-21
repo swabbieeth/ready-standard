@@ -1,8 +1,8 @@
 # Working in ready-standard
 
-This repository documents the `.ready` standard (Ready standard 8) as Ready
+This repository documents the `.ready` standard (Ready standard 9) as Ready
 Room implements it and ships the `ready-standard` agent skill (the ready skill)
-for writing a Ready Intent Package (RIP): the bundle of `.ready` files that
+for writing a Ready Intent Package (RIP): the bundle of `.ready` records that
 describes a product. Ready Room's code is the source of truth; this repository
 follows it.
 
@@ -16,7 +16,7 @@ follows it.
 3. Ready Room `app/scripts/ready.ts`: the CLI, run as `npm run ready --
    validate|export|schema`, and published as `@readyroom/ready`.
 4. Ready Room `research/intent-model/ready-standard.md`: the approved Ready
-   standard 8 specification, with its worked example and recorded decisions.
+   standard 9 specification, with its worked example and recorded decisions.
 5. Ready Room `AGENTS.md` and `product/`: how the standard is used in practice.
 
 The repository owner directs product-intent principles (`principles.md`); code
@@ -35,9 +35,9 @@ does not change them.
 
 ## Current sync
 
-Matches Ready standard 8 (schema 2) and `@readyroom/ready` 1.2 in Ready Room
-`35a1145` (release v00.20.00): `scripts/check.sh` passes against it, and every
-validator code the loader can raise appears in `references/`.
+Matches Ready standard 9 (schema 3) in Ready Room `b817c009` (release
+v00.22.00): `scripts/check.sh` passes against it, and every validator code the
+loader can raise appears in `references/`.
 
 ## Keeping in sync with Ready Room
 
@@ -77,7 +77,7 @@ Ready Room's schema first.
   `readyroom://guidance/ready-standard`, the plugin skill `rip-authoring`, and
   the validator package `@readyroom/ready`.
 
-- Every YAML example that is a whole record (`ready: 2` …) must validate: put new
+- Every YAML example that is a whole record (`ready: 3` …) must validate: put new
   ones in the template package or check them in a scratch package with the
   validator.
 - Write principles and guidance in the present tense, as current rules. No

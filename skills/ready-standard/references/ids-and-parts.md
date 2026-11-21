@@ -82,7 +82,8 @@ Each part:
 - has id `<overview id>.a` (`.b`, …), `part_of: <overview id>`, and display id
   `<overview display id>-a` (`SEQ-PREVIEW-a`);
 - is a complete record of the same kind (a flow part needs `capability`,
-  `title`, `summary`, `subject`, `steps`);
+  `title`, `summary`, `subject`, and steps — listed in `steps` or pointing to
+  it via `step.flow`);
 - links to the next part directly: a sequence part ends with
   `continue: {to: <next part id>}`, and a step's edge points at the first step
   of the next flow part.

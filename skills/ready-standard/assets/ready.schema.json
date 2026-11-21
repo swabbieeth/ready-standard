@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://readyroom.dev/schemas/ready-2.schema.json",
+  "$id": "https://readyroom.dev/schemas/ready-3.schema.json",
   "title": "Ready Room intent record",
-  "description": "One .ready file under product/: a single typed record of a Ready Intent Package (schema 2). Generated from app/src/shared/intent/types.ts by `ready schema`; do not edit. Graph checks (references, capability homes, flows, edges, and applied rules) need the whole RIP and are reported by `ready validate`.",
+  "description": "One .ready file under product/: a single typed record of a Ready Intent Package (schema 3). Generated from app/src/shared/intent/types.ts by `ready schema`; do not edit. Graph checks (references, capability homes, flows, edges, and applied rules) need the whole RIP and are reported by `ready validate`.",
   "oneOf": [
     {
       "type": "object",
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -102,7 +102,26 @@
         },
         "format_version": {
           "type": "string",
-          "const": "8.0.0"
+          "const": "9.0.0"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "template": {
+          "type": "string",
+          "minLength": 1
+        },
+        "labels": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "boundary": {
           "type": "object",
@@ -177,7 +196,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -309,7 +328,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -454,8 +473,7 @@
         "kind",
         "capability",
         "title",
-        "subject",
-        "steps"
+        "subject"
       ],
       "additionalProperties": false
     },
@@ -464,7 +482,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -555,6 +573,8 @@
           "type": "string",
           "enum": [
             "screen",
+            "task",
+            "approval",
             "action",
             "decision",
             "system",
@@ -562,6 +582,15 @@
             "error",
             "state"
           ]
+        },
+        "order": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
         },
         "edges": {
           "type": "array",
@@ -613,8 +642,13 @@
                   "email",
                   "push",
                   "async",
-                  "link"
+                  "link",
+                  "handoff"
                 ]
+              },
+              "to_actor": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
               },
               "platforms": {
                 "type": "array",
@@ -799,7 +833,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -978,7 +1012,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -1570,7 +1604,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -1885,7 +1919,7 @@
           "properties": {
             "ready": {
               "type": "number",
-              "const": 2
+              "const": 3
             },
             "id": {
               "type": "string",
@@ -2098,7 +2132,7 @@
           "properties": {
             "ready": {
               "type": "number",
-              "const": 2
+              "const": 3
             },
             "id": {
               "type": "string",
@@ -2311,7 +2345,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -2436,7 +2470,7 @@
           "properties": {
             "ready": {
               "type": "number",
-              "const": 2
+              "const": 3
             },
             "id": {
               "type": "string",
@@ -2965,7 +2999,7 @@
           "properties": {
             "ready": {
               "type": "number",
-              "const": 2
+              "const": 3
             },
             "id": {
               "type": "string",
@@ -3115,7 +3149,7 @@
           "properties": {
             "ready": {
               "type": "number",
-              "const": 2
+              "const": 3
             },
             "id": {
               "type": "string",
@@ -3266,7 +3300,7 @@
           "properties": {
             "ready": {
               "type": "number",
-              "const": 2
+              "const": 3
             },
             "id": {
               "type": "string",
@@ -3426,7 +3460,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -3527,6 +3561,22 @@
             "product"
           ]
         },
+        "autonomy": {
+          "type": "string",
+          "enum": [
+            "autonomous",
+            "escalate_external",
+            "approval_required",
+            "advisory"
+          ]
+        },
+        "systems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+          }
+        },
         "connections": {
           "type": "array",
           "items": {
@@ -3569,7 +3619,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -3795,7 +3845,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",
@@ -3936,7 +3986,7 @@
       "properties": {
         "ready": {
           "type": "number",
-          "const": 2
+          "const": 3
         },
         "id": {
           "type": "string",

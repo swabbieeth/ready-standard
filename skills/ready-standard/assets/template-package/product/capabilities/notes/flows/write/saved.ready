@@ -1,5 +1,5 @@
 # Template: journey step that ends the flow (step_kind outcome, no edges).
-ready: 2
+ready: 3
 kind: step
 id: notes.write.saved
 flow: notes.write

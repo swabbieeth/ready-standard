@@ -6,7 +6,7 @@
 #   environments [{name, notes}],
 #   units [{name, unit_kind (function | job | schedule | service | queue),
 #   schedule, resources, notes}], secrets (names only, never values).
-ready: 2
+ready: 3
 kind: system
 id: system.app
 display_id: SYS-APP

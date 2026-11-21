@@ -1,5 +1,5 @@
 # Template: journey step for a visible failure (step_kind error).
-ready: 2
+ready: 3
 kind: step
 id: notes.write.too-long
 flow: notes.write

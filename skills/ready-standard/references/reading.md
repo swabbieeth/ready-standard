@@ -11,9 +11,10 @@ A Ready Intent Package (RIP) lives at `<repo>/product/`.
    If neither sets a DCL, the capability has none.
 3. The relevant capability's flows. A flow whose `subject` is an actor is a
    journey; one whose `subject` is an entity is that entity's lifecycle. Read
-   the steps in the flow's `steps` order, and follow each step's `edges`: the
-   trigger that takes the edge, its guard, and the sequence and outcome it
-   runs.
+   the steps in the flow's `steps` order (or, when `steps` is omitted, by
+   `step.order` then `step.id`), and follow each step's `edges`: the trigger
+   that takes the edge, its guard, any `channel` and `to_actor` handoff, and
+   the sequence and outcome it runs.
 4. The sequences those edges run, then the rules and triggers the capability
    holds.
 5. The shared records the capability links: `product/shared/data/` (entities

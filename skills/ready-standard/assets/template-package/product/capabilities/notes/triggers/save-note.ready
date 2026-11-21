@@ -3,7 +3,7 @@
 # Required: ready, kind, id, name, trigger_kind (action | event | schedule | call).
 # Optional: summary, capability (only when used in one capability), actor (who
 #   acts), interface (where it fires), schedule (when).
-ready: 2
+ready: 3
 kind: trigger
 id: notes.save-note
 display_id: TRIG-SAVE-NOTE
