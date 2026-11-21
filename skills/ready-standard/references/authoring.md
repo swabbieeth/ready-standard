@@ -2,7 +2,7 @@
 
 ## Change workflow
 
-Changes to a Ready Intent Package (RIP) follow one workflow.
+Changes to a Ready Logic Package (RLP) follow one workflow.
 
 1. **Confirm the intent.** The request comes from the owner, or the change is a
    faithful restatement of intent they already gave. If code, a ticket, or your
@@ -29,8 +29,8 @@ Changes to a Ready Intent Package (RIP) follow one workflow.
    explains the current design, and delete reasons that no longer apply.
 7. **Validate** (see [validation.md](validation.md)) until there are 0 errors,
    and check every new warning.
-8. **Release.** If the repository versions its RIP, set `product.release` to
-   the version the RIP now describes, as its `AGENTS.md` directs.
+8. **Release.** If the repository versions its RL, set `product.release` to
+   the version the RL now describes, as its `AGENTS.md` directs.
 
 ## Where a record lives
 
@@ -151,7 +151,7 @@ go in a supplementary file (limits in
       (`{key: label}` vocabulary overrides that travel with the package).
 - [ ] `boundary` (what this release includes and excludes), `exclusions`,
       `measures`.
-- [ ] `release` matches the version the RIP describes, if the repository uses one.
+- [ ] `release` matches the version the RL describes, if the repository uses one.
 - [ ] Optional `dcl` holds the product default with a `basis`.
 - [ ] No rules, gates, algorithms, queues, or database mechanics; product-wide
       rationale and topology notes only.
@@ -353,7 +353,7 @@ go in a supplementary file (limits in
 
 **constant**
 - [ ] `name` in code style (`INVITATION_TTL`); `value` quoted as text with `unit`.
-- [ ] `source` (`path#key`) when code owns the value; omit `value` when the RIP
+- [ ] `source` (`path#key`) when code owns the value; omit `value` when the RL
       only names it.
 - [ ] Records that use it link it (`constants` on messages and columns).
 

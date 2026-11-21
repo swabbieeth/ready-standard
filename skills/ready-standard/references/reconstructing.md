@@ -1,10 +1,10 @@
-# Writing a RIP for an existing product
+# Writing an RL for an existing product
 
-Use this when a product exists and its Ready Intent Package (RIP) is missing,
+Use this when a product exists and its Ready Logic Package (RLP) is missing,
 incomplete, contradicts itself, or is written in some other form. The task is
 always the same: write the product's intended end state from scratch, in the
 format of [format.md](format.md), using everything that exists as source
-material. Nothing is carried over mechanically. An earlier RIP, intent
+material. Nothing is carried over mechanically. An earlier RL, intent
 documents, specs, and tickets are read for what they say the product should
 do, then written again as records; their structure, ids, and wording are not
 kept for their own sake.
@@ -59,7 +59,7 @@ the capabilities are written, make one pass over the boundaries between them.
 
 ## Steps
 
-1. **Work outside the canonical package.** Write the records in a RIP fork (a
+1. **Work outside the canonical package.** Write the records in a RLP fork (a
    branch, worktree, or separate directory) and keep observations, inferences,
    contradictions, and questions in separate working notes. Never use the
    canonical `product/` as the scratchpad.

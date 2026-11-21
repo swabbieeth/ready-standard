@@ -1,12 +1,12 @@
 # Intent principles for `.ready` records
 
 The format says where a fact goes. These principles say what belongs in the
-Ready Intent Package (RIP) at all and who decides it. They apply to every
+Ready Logic Package (RLP) at all and who decides it. They apply to every
 record kind.
 
-## The RIP is the current intended end state
+## The RL is the current intended end state
 
-- The canonical RIP is `product/` on the repository's canonical branch. It
+- The canonical RL is `product/` on the repository's canonical branch. It
   states what the product is meant to be, in the present tense. It may lead the
   code: present tense is not a claim that the implementation matches.
 - No document-status, readiness, proposal, signoff, review, or ticket-handoff
@@ -20,7 +20,7 @@ record kind.
   in the ticket.
 - One behavior for every client. A platform difference appears only where a
   record says so on purpose (`platforms` on a step or an edge).
-- An alternative end state is written as a complete, coherent RIP in a branch,
+- An alternative end state is written as a complete, coherent RL in a branch,
   worktree, or separate location, never as competing records in the canonical
   package. Adoption replaces the canonical records through normal review.
 
@@ -174,7 +174,7 @@ trigger names, and every message, note, and node text.
   frame, file, or version; a whole design file is context. Records state
   behavior and copy, not layout or visual form, unless the design drives
   behavior.
-- A test written as given/when/then belongs in the code repository. In the RIP,
+- A test written as given/when/then belongs in the code repository. In the RL,
   what must always hold is an invariant rule, and what must be measured is a
   quality rule.
 
@@ -193,7 +193,7 @@ trigger names, and every message, note, and node text.
   invariant a narrower constraint cannot protect, and record it in
   `coordination` and the sequence's `lock` op.
 - The repository's declared schema files hold the complete physical definition;
-  the RIP holds the product-significant subset and must agree with them.
+  the RL holds the product-significant subset and must agree with them.
 - A sequence's `op` names the intended access path; it never promises which
   index the query planner chooses.
 - Note real operating limits where they shape behavior: total connection
@@ -272,7 +272,7 @@ intent requires. It describes target intent only.
   `summary` or the sequence that carries it out (`transaction`, `alt` on a
   repeat request).
 - DCL never requires automatic handling of every edge case, and a high level
-  does not justify automating a rare one. When the RIP does not resolve a rare
+  does not justify automating a rare one. When the RL does not resolve a rare
   case, ask the owner whether it is automatic, contained for manual review, a
   visible failure, or excluded, and record the answer in the owning record
   before implementing it. Do not invent an outcome for a branch the owner has
@@ -285,7 +285,7 @@ intent requires. It describes target intent only.
   needs an action existing tools cannot safely perform, or frequency or urgency
   justifies it.
 - Keep implementation DCL assessments and comparisons in audit notes, never in
-  the RIP.
+  the RL.
 
 ## The owner directs intent
 
@@ -297,7 +297,7 @@ intent requires. It describes target intent only.
   authorize a different outcome, and agreement between artifacts built from
   the same inference is not confirmation.
 - When evidence suggests different intent, report it and ask; or write the
-  alternative as a RIP fork. Do not edit the canonical records to match code.
+  alternative as a RLP fork. Do not edit the canonical records to match code.
 - Ask one product question before a mechanism the records do not state would
   create a durable eligibility, admission, or classification; split a
   population or surface; move a rule between stages (authorization, retrieval,
@@ -322,7 +322,7 @@ intent requires. It describes target intent only.
 
 - An `id` and a `display_id` are cited by records, code comments, tests,
   tickets, and Ready Room links. Change one only when the name is wrong, and
-  then change every citation in the same change: the RIP, the code, and the
+  then change every citation in the same change: the RL, the code, and the
   documents that cite it. Nothing keeps an old name resolving.
 - A changed title does not need a changed id.
 

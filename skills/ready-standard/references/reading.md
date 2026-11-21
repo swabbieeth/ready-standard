@@ -1,6 +1,6 @@
 # Reading a package
 
-A Ready Intent Package (RIP) lives at `<repo>/product/`.
+A Ready Logic Package (RLP) lives at `<repo>/product/`.
 
 ## Where to start
 

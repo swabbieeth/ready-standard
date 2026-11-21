@@ -2,7 +2,7 @@
 
 This repository documents the `.ready` standard (Ready standard 9) as Ready
 Room implements it and ships the `ready-standard` agent skill (the ready skill)
-for writing a Ready Intent Package (RIP): the bundle of `.ready` records that
+for writing a Ready Logic Package (RLP): the bundle of `.ready` records that
 describes a product. Ready Room's code is the source of truth; this repository
 follows it.
 
@@ -35,7 +35,7 @@ does not change them.
 
 ## Current sync
 
-Matches Ready standard 9 (schema 3) in Ready Room `b817c009` (release
+Matches Ready standard 9 (schema 3) in Ready Room `6df5ccf7` (release
 v00.22.00): `scripts/check.sh` passes against it, and every validator code the
 loader can raise appears in `references/`.
 
@@ -66,12 +66,14 @@ Ready Room's schema first.
 
 ## Writing in this repository
 
-- Call the bundle of `.ready` files a Ready Intent Package (spelled out with
-  "(RIP)" on first use in each document), then RIP, ready package, or `.ready`
-  package.
-- A product's RIP lives in its repository, under `product/`. A person's
-  checkout of it is their working copy, and Ready Room holds a mirror of each
-  working copy that the person's own agent sends. Never "cloud RIP".
+- Call the live graph of typed records **Ready Logic** (or **Room Logic** inside
+  a Ready Room room; spelled out with "(RL)" on first use in each document),
+  then RL. Call the exported or repository bundle of `.ready` files under
+  `product/` a **Ready Logic Package** (spelled out with "(RLP)" on first use),
+  then RLP, ready package, or `.ready` package.
+- A repository's RLP lives under `product/`. A person's checkout of it is their
+  working copy, and Ready Room holds a mirror of each working copy that the
+  person's own agent sends. Never "cloud RIP" or "cloud RL".
 - Ready Room contract names, cited only where needed and exactly as named: the
   MCP prompt `rip_authoring_guidance`, the resource
   `readyroom://guidance/ready-standard`, the plugin skill `rip-authoring`, and

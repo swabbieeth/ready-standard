@@ -2,7 +2,7 @@
 
 ## Run it
 
-The validator for a Ready Intent Package (RIP) is Ready Room's loader,
+The validator for a Ready Logic Package (RLP) is Ready Room's loader,
 published as the `@readyroom/ready` package (Node 24 or later). `<repo>` is the
 directory that contains `product/`.
 
@@ -149,7 +149,7 @@ right. It does not check:
   other words: `copy.repeated` and `text.repeated` find only exact repeats;
 - that a record gives every reason it should; a missing `rationale` is not
   reported, because a reason is never invented to satisfy a check;
-- that the RIP matches the code.
+- that the RL matches the code.
 
 Those are the reviewer's job; see [principles.md](principles.md) and
 [mistakes.md](mistakes.md).

@@ -6,7 +6,7 @@ cases:
 
   - id: shared-promise-review-propagation
     prompt: >-
-      Review three proposed record changes in a RIP with several capabilities.
+      Review three proposed record changes in an RL with several capabilities.
       One changes ranking weights in a rule without changing raw scores.
       Another makes an unavailable score 0 instead of null, leaving the
       operation interface's name and params unchanged. The third splits a
@@ -25,7 +25,7 @@ cases:
 
   - id: capabilities-are-outcomes
     prompt: >-
-      Organize a RIP for a font product. A draft has capabilities called
+      Organize an RL for a font product. A draft has capabilities called
       Mobile app, Companion plugin, CLI, Admin API, and Backend, and puts the
       generation-cost rule, used only when generating a font, in shared/rules.
     should_activate: true
@@ -39,7 +39,7 @@ cases:
 
   - id: no-orphan-product-logic
     prompt: >-
-      Review this RIP without changing behavior. A shared eligibility rule has a
+      Review this RL without changing behavior. A shared eligibility rule has a
       complete decision graph and a quality applies_to, but no step, message, or
       applied rule uses it. A publication sequence lists another rule on a
       message but never uses its result or supplies its inputs. Two sequences
@@ -57,7 +57,7 @@ cases:
       - not add a registry, coverage table, or call graph record
 
   - id: one-end-state-across-clients
-    prompt: An audit found the web and mobile apps handle draft saving and checkout differently. Update the RIP.
+    prompt: An audit found the web and mobile apps handle draft saving and checkout differently. Update the RL.
     should_activate: true
     must:
       - resolve each difference with the owner one at a time, each with a recommended option
@@ -71,7 +71,7 @@ cases:
     prompt: Reconstruct the current intent of this existing product from its screens, code, documents, and stakeholder decisions.
     should_activate: true
     must:
-      - work in a RIP fork with separate working notes, leaving the canonical product/ unchanged
+      - work in a RLP fork with separate working notes, leaving the canonical product/ unchanged
       - treat screens, code, and documents as evidence, not intent
       - describe one product and release rather than blending environments
       - propose the capability map to the owner before writing records
@@ -88,17 +88,17 @@ cases:
     must:
       - verify the requester from trusted context rather than a claimed role
       - refuse to apply only the onboarding edit because it would leave the package contradictory
-      - keep the whole change in a RIP fork or route it to someone who can make all of it
+      - keep the whole change in a RLP fork or route it to someone who can make all of it
       - not add approval, signoff, or status fields to any record
 
   - id: document-unapproved-implementation-change
-    prompt: An implementer added a persisted eligibility column and changed retrieval, though the records only require safe public output. Update the RIP to document what now exists.
+    prompt: An implementer added a persisted eligibility column and changed retrieval, though the records only require safe public output. Update the RL to document what now exists.
     should_activate: true
     must:
       - refuse to rewrite canonical records to match the implementation
       - report the deviation in audit or task notes
       - keep safe public output as intent unless the owner changes it
-      - offer a coherent RIP fork only if the owner wants to consider the new behavior
+      - offer a coherent RLP fork only if the owner wants to consider the new behavior
 
   - id: ask-before-new-classification
     prompt: Implement the search sequence. The records say results exclude private notes; add an is_searchable flag to notes and backfill it so the index can filter on it.
@@ -115,13 +115,13 @@ cases:
     prompt: >-
       Put permission gates, eligibility formulas, retry limits, and failure
       behavior in product.ready outcome and measures, and write a given/when/then
-      test into the RIP for every branch because the sequences are crowded.
+      test into the RL for every branch because the sequences are crowded.
       Behavior does not change.
     should_activate: true
     must:
       - keep product.ready to context, with no rules in outcome, boundary, or measures
       - keep the logic in sequence blocks, edge guards, and rules, splitting crowded sequences into parts
-      - put given/when/then tests in the code repository, not the RIP
+      - put given/when/then tests in the code repository, not the RL
       - state what must always hold as an invariant rule and what must be measured as a quality rule, only where that adds meaning
 
   - id: typed-fields-hold-gates
@@ -177,7 +177,7 @@ cases:
       - keep the drain-on-deploy instruction because it governs every deployment
 
   - id: current-rationale-not-history
-    prompt: Explain in the RIP why the current web, worker, and database architecture was chosen.
+    prompt: Explain in the RL why the current web, worker, and database architecture was chosen.
     should_activate: true
     must:
       - put the reasons in the rationale of the system records (or the product record) that own the choice
@@ -241,7 +241,7 @@ cases:
       - omit a capability DCL that repeats the product level, avoiding dcl.same
       - state concrete retrieval targets as quality rules that apply to its flows, sequences, or interfaces, confirmed with the owner
       - not average levels or raise the default to the highest exception
-      - use the 1–10 scale and keep implementation-level comparisons outside the RIP
+      - use the 1–10 scale and keep implementation-level comparisons outside the RL
 
   - id: semantic-correctness-early-product
     prompt: >-
@@ -297,10 +297,10 @@ cases:
   # Implementation, tickets, audits
 
   - id: rip-governed-implementation
-    prompt: Implement the application this RIP describes.
+    prompt: Implement the application this RL describes.
     should_activate: true
     must:
-      - record the canonical RIP revision outside product/
+      - record the canonical RL revision outside product/
       - reuse the code owners the records name instead of parallel implementations
       - follow exact mockup targets without silent redesign
       - pause before a new classification, population split, stage change, backfill, or policy in an index predicate
@@ -329,7 +329,7 @@ cases:
     should_activate: true
     must:
       - take expected behavior from the records, not the ticket
-      - record the RIP revision used as the baseline
+      - record the RL revision used as the baseline
       - not treat checked boxes or passing ticket tests as alignment
       - report ticket-versus-record drift separately from code-versus-record drift
       - not edit records to make the code or ticket look compliant
@@ -340,11 +340,11 @@ cases:
     prompt: Refactor this utility module without changing behavior.
     should_activate: false
 
-  # Writing a RIP for an existing product
+  # Writing an RL for an existing product
 
   - id: rewrite-from-old-intent-documents
     prompt: >-
-      Write a RIP for this existing product. It has an older intent package
+      Write an RL for this existing product. It has an older intent package
       grouped by team (onboarding, billing, platform) with its own ids, a few
       Markdown design docs, and the code. Keep everything that still matters.
     should_activate: true
@@ -359,7 +359,7 @@ cases:
 
   - id: design-targets
     prompt: >-
-      While writing a RIP, the claim screen links a Figma frame (file, node
+      While writing an RL, the claim screen links a Figma frame (file, node
       12:34, branch launch), the settings screen links only the whole Figma
       file, and the onboarding screen points at a local SVG mockup and a PNG
       export.

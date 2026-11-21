@@ -1,9 +1,10 @@
 # Ready standard
 
-The `.ready` standard writes a product's intent as a **Ready Intent Package
-(RIP)**, or ready package: a graph of typed records keyed by `id`, stored
-natively in a Ready Room room or serialized as `.ready` YAML files under a
-repository's `product/` directory. The product is organized into capabilities,
+The `.ready` standard expresses live **Ready Logic (RL)** — or **Room Logic**
+inside a Ready Room room — as a graph of typed records keyed by `id`, stored
+natively in a room or exported/committed as a **Ready Logic Package (RLP)** of
+`.ready` YAML files under a repository's `product/` directory. The product is
+organized into capabilities,
 outcomes some actor gets. Each capability draws its behavior as flows (journeys
 for people and agents, lifecycles for records) whose edges name the trigger
 that takes them and the sequence they run, plus the rules used only there.
@@ -46,12 +47,12 @@ skills/ready-standard/              the agent skill (install this folder)
   SKILL.md                          when to use it and the workflow
   references/
     format.md                       THE SPECIFICATION: model, layout, kinds, fields, ids, validator codes
-    principles.md                   what belongs in a RIP and who decides it
+    principles.md                   what belongs in an RL and who decides it
     authoring.md                    change workflow and per-kind checklist
     ids-and-parts.md                ids, display ids, renaming, lettered parts
     reading.md                      reading and exporting a package
     validation.md                   running the validator and fixing its output
-    reconstructing.md               writing a RIP for an existing product from its code and documents
+    reconstructing.md               writing an RL for an existing product from its code and documents
     auditing.md                     checking code against records; tickets
     mistakes.md                     common mistakes
   assets/

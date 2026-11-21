@@ -1,19 +1,20 @@
 ---
 name: ready-standard
-description: Read, write, change, validate, or audit a Ready Intent Package (RIP), the `.ready` records (typed YAML files) under a repository's `product/` directory that Ready Room loads. Use when the user asks to work on a RIP, ready package, or `.ready` files (capabilities, flows, steps, sequences, rules, triggers, interfaces, entities, and the other kinds), to write a RIP for an existing product from its code and documents, or to check code against `.ready` records. Do not use for ordinary planning, coding, or documentation in a repository with no ready package.
+description: Read, write, change, validate, or audit Ready Logic (RL) and its exported Ready Logic Package (RLP), the `.ready` records under a repository's `product/` directory that Ready Room loads. Use when the user asks to work on RL, an RLP, a ready package, or `.ready` files (capabilities, flows, steps, sequences, rules, triggers, interfaces, entities, and the other kinds), to write RL for an existing product from its code and documents, or to check code against `.ready` records. Do not use for ordinary planning, coding, or documentation in a repository with no ready package.
 ---
 
 # Ready standard
 
-A Ready Intent Package (RIP) is the product's current intended end state,
-written as a graph of typed records keyed by `id`: stored natively as structured
-records in a Ready Room room or serialized as one `.ready` YAML file per record
-under `product/`. The product is organized into capabilities, outcomes some
-actor gets. Each capability draws its behavior as flows (journeys for people
-and agents, lifecycles for records), the sequences that run between their steps,
-and the rules used only there. Data, interfaces, actors, systems, triggers,
-shared rules, constants, and terms are shared and defined once. Records refer to
-each other by `id`; every diagram, outline, and export is derived from them.
+**Ready Logic (RL)** — or **Room Logic** inside a Ready Room room — is the
+current intended end state, written as a graph of typed records keyed by `id`:
+stored natively as structured records in a Ready Room room or exported/committed
+as a **Ready Logic Package (RLP)** of one `.ready` YAML file per record under
+`product/`. The product is organized into capabilities, outcomes some actor
+gets. Each capability draws its behavior as flows (journeys for people and
+agents, lifecycles for records), the sequences that run between their steps, and
+the rules used only there. Data, interfaces, actors, systems, triggers, shared
+rules, constants, and terms are shared and defined once. Records refer to each
+other by `id`; every diagram, outline, and export is derived from them.
 
 Ready Room's schema (`app/src/shared/intent/types.ts`) is authoritative for
 every field. [references/format.md](references/format.md) is the readable
@@ -59,7 +60,7 @@ intent.
 - **The owner directs intent.** Code, tickets, tests, old documents, and agent
   suggestions are evidence, not authority.
 - **No old names.** Nothing keeps a retired id resolving: a changed id or
-  display id is updated everywhere it is cited, in the RIP and in code, in
+  display id is updated everywhere it is cited, in the RL and in code, in
   the same change.
 
 ## Workflow
@@ -87,7 +88,7 @@ intent.
 
 ## Other tasks
 
-- Writing a RIP for an existing product from its code and any old intent
+- Writing an RL for an existing product from its code and any old intent
   documents: [references/reconstructing.md](references/reconstructing.md).
 - Auditing code against records, or writing tickets that link them:
   [references/auditing.md](references/auditing.md).

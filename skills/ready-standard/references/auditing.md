@@ -6,10 +6,10 @@ The records are the expected behavior. Code, schemas, tests, tickets, logs, and
 runtime behavior are evidence of what exists. An audit reports the difference;
 it does not edit records to match the code.
 
-An audit compares code with a Ready Intent Package (RIP).
+An audit compares code with a Ready Logic Package (RLP).
 
-1. **Fix the baseline.** Record the canonical RIP revision (commit) and
-   `product.release` in the audit notes, not in the RIP. Validate it: an audit
+1. **Fix the baseline.** Record the canonical RL revision (commit) and
+   `product.release` in the audit notes, not in the RL. Validate it: an audit
    against a package with errors is unreliable.
 2. **Scope by capability.** Use a ticket, if any, only to find the scope and
    code area. Take the expected behavior from the owning records: the

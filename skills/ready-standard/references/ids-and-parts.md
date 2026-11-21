@@ -55,7 +55,7 @@ records merged, the name misleads), and in the same change:
 
 1. Rename it in the record.
 2. Update every reference in `product/`: `grep -rn '<old id>' product/`.
-3. Update every citation outside the RIP: code comments, tests, documents,
+3. Update every citation outside the RL: code comments, tests, documents,
    `AGENTS.md`, and open tickets that cite the old id or display id.
 4. Validate to 0 errors; any `ref.missing` points at a reference you missed.
 

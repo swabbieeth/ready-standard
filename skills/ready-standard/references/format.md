@@ -8,13 +8,14 @@ The generated JSON Schema ships with this skill at
 [`assets/ready.schema.json`](../assets/ready.schema.json) for editor
 completion; `npx @readyroom/ready schema` prints the current one.
 
-A Ready Intent Package (RIP) describes a product as it is meant to be, as a
-graph of typed records keyed by `id`. Ready Room stores and validates records
-natively in a room's SQLite store (`loadRecords`) and serializes the same graph
-deterministically to one `.ready` YAML file per record under `product/`
-(`canonicalRecordPath`, `serializeRecord`, `serializeModel`). Records refer to
-each other by `id`. Every diagram, outline, export, and diff is derived from
-the records; nothing visual is stored.
+**Ready Logic (RL)** — or **Room Logic** inside a Ready Room room — describes a
+system, operation, or product as it is meant to be, as a graph of typed records
+keyed by `id`. Ready Room stores and validates records natively in a room's
+SQLite store (`loadRecords`) and serializes the same graph deterministically to
+a **Ready Logic Package (RLP)** of one `.ready` YAML file per record under
+`product/` (`canonicalRecordPath`, `serializeRecord`, `serializeModel`). Records
+refer to each other by `id`. Every diagram, outline, export, and diff is derived
+from the records; nothing visual is stored.
 
 ## The model
 
@@ -79,7 +80,7 @@ subject ends up.
 
 ## Record-first storage and package layout
 
-The canonical unit of a RIP is a typed record keyed by `id`. Ready Room loads
+The canonical unit of an RL is a typed record keyed by `id`. Ready Room loads
 records directly from structured JSON (`loadRecords`) or from `.ready` YAML
 files under `product/` (`loadModel`), and projects any record graph back to
 deterministic `.ready` file paths (`canonicalRecordPath` / `serializeModel`):
@@ -156,7 +157,7 @@ citations. References always use the target's `id`.
 - **Display-id prefixes:** `CAP-`, `FLOW-`, `SEQ-`, `DATA-`, `IF-`, `RULE-`,
   `TRIG-`, `ACTOR-`, `SYS-`, `CONST-`, `TERM-`.
 - **No old names.** An id or display id that changes is changed everywhere it is
-  cited, in the RIP and in code. The format has no field that keeps old names
+  cited, in the RL and in code. The format has no field that keeps old names
   resolving.
 
 The loader rejects an id or display id that names two records. See
@@ -473,7 +474,7 @@ direction?}]`, `environments? [{name, notes?}]`, `units? [{name, unit_kind?
 
 ### constant
 
-`name, value?` (text; omit when the RIP only names it), `unit?`, `source?`
+`name, value?` (text; omit when the RL only names it), `unit?`, `source?`
 (config `path#key` when code owns the value), `description?`, `table?
 {columns, rows}`. Use it for named values (`INVITATION_TTL = 7 days`) and value
 tables (tiers).
@@ -500,7 +501,7 @@ them for payload and contract types, model prompts, long reference prose that
 is not one record's rationale, and SVG mockups. Never put logic in them: logic
 stays in records, where it is typed and checked.
 
-Code is never copied into the RIP. Refer to it with `code` paths and `call`,
+Code is never copied into the RL. Refer to it with `code` paths and `call`,
 and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
 
 ## Validation
