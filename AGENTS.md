@@ -75,9 +75,10 @@ Ready Room's schema first.
   working copy, and Ready Room holds a mirror of each working copy that the
   person's own agent sends. Never "cloud RIP" or "cloud RL".
 - Ready Room contract names, cited only where needed and exactly as named: the
-  MCP prompt `rip_authoring_guidance`, the resource
-  `readyroom://guidance/ready-standard`, the plugin skill `rip-authoring`, and
-  the validator package `@readyroom/ready`.
+  MCP prompts `ready_logic_guidance` (alias `rip_authoring_guidance`),
+  `bootstrap_ops_room`, `bootstrap_personal_workbench`, and
+  `capture_as_you_work`; the resource `readyroom://guidance/ready-standard`;
+  the plugin skill `ready-logic`; and the validator package `@readyroom/ready`.
 
 - Every YAML example that is a whole record (`ready: 3` …) must validate: put new
   ones in the template package or check them in a scratch package with the
