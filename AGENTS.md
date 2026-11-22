@@ -35,7 +35,7 @@ does not change them.
 
 ## Current sync
 
-Matches Ready standard 9 (schema 3) in Ready Room `6df5ccf7` (release
+Matches Ready standard 9 (schema 3) in Ready Room `8dc43b34` (release
 v00.22.00): `scripts/check.sh` passes against it, and every validator code the
 loader can raise appears in `references/`.
 
@@ -76,8 +76,8 @@ Ready Room's schema first.
   person's own agent sends. Never "cloud RIP" or "cloud RL".
 - Ready Room contract names, cited only where needed and exactly as named: the
   MCP prompts `ready_logic_guidance` (alias `rip_authoring_guidance`),
-  `bootstrap_ops_room`, `bootstrap_personal_workbench`, and
-  `capture_as_you_work`; the resource `readyroom://guidance/ready-standard`;
+  `collaborate_room_design`, `bootstrap_ops_room`,
+  `bootstrap_personal_workbench`, and `capture_as_you_work`; the resource `readyroom://guidance/ready-standard`;
   the plugin skill `ready-logic`; and the validator package `@readyroom/ready`.
 
 - Every YAML example that is a whole record (`ready: 3` …) must validate: put new

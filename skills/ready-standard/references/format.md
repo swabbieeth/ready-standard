@@ -458,10 +458,12 @@ its own `sequence`. Quality and invariant rules apply through their
 ### actor
 
 `name, description?, goal?, side` (person, operator, agent, third_party,
-product), `autonomy?` (autonomous, escalate_external, approval_required,
-advisory — default operating boundary for an actor or agent), `systems?`
-(system ids this actor operates in), `connections? [{to (system or actor),
-label?, direction? (to, both)}]` for an actor's own links on the system map.
+product), `managed_by?` (owning human or orchestrator actor id that oversees or
+spawns this actor), `autonomy?` (autonomous, escalate_external,
+approval_required, advisory — default operating boundary for an actor or
+agent), `systems?` (system ids this actor operates in), `connections? [{to
+(system or actor), label?, direction? (to, both)}]` for an actor's own links on
+the system map.
 
 ### system
 
@@ -532,6 +534,7 @@ is in [validation.md](validation.md).
 | `ref.missing` | E | A reference points at no record. |
 | `ref.kind` | E | A reference points at the wrong kind of record. |
 | `ref.file` | E | A referenced supplementary file is not in the package. |
+| `actor.managed_by` | E | An actor's `managed_by` points to itself. |
 | `home.capability` | E | A flow or sequence names no capability, or a capability that doesn't exist. |
 | `home.shared` | W | A rule that names a capability is used outside it. |
 | `flow.subject` | E | A flow's subject is not an actor or an entity. |

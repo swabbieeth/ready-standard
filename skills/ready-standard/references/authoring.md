@@ -344,10 +344,12 @@ go in a supplementary file (limits in
 
 **actor / system**
 - [ ] Actor `side` set (`person`, `operator`, `agent`, `third_party`,
-      `product`); `goal` in the actor's terms; optional `autonomy`
-      (`autonomous`, `escalate_external`, `approval_required`, `advisory`) and
-      `systems` (system ids this actor operates in). An agent that acts for
-      someone is an actor with `side: agent`.
+      `product`); `goal` in the actor's terms; optional `managed_by` (owning
+      human or orchestrator actor id), `autonomy` (`autonomous`,
+      `escalate_external`, `approval_required`, `advisory`), and `systems`
+      (system ids this actor operates in). An agent or subagent that acts for
+      someone is an actor with `side: agent` and `managed_by` naming its owning
+      human or orchestrator.
 - [ ] System `role`, `system_kind`, `within` (its host), and `connections`
       with labels; `secrets` are names only.
 

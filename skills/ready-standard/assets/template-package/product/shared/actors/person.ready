@@ -1,8 +1,9 @@
 # Template: actor.
 # Required: ready, kind, id, name, side (person | operator | agent |
 #   third_party | product).
-# Optional: description, goal, autonomy (autonomous | escalate_external |
-#   approval_required | advisory), systems (system ids this actor operates in),
+# Optional: description, goal, managed_by (owning human or orchestrator actor
+#   id), autonomy (autonomous | escalate_external | approval_required |
+#   advisory), systems (system ids this actor operates in),
 #   connections [{to, label, direction (to | both)}].
 ready: 3
 kind: actor
