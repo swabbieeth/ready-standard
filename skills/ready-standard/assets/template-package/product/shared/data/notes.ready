@@ -6,7 +6,7 @@
 #   view {source, security_invoker}, projection_of, volume,
 #   relationships [{to, on, from_card, to_card, link (fk | logical),
 #   on_delete, label, reason}].
-# Column fields: name, type, keys (PK | FK | UK), fk {entity, column,
+# Column fields: name, type, keys (PK | FK | UK for tables/views; ID | LINK for non-DB stores), fk {entity, column,
 #   on_delete, on_update}, nullable, default, check, values, generated,
 #   visibility, rule, indexes (badges such as I1·1, P1·where), constants.
 # Index fields: id (badge), name, purpose, plus display_id, requested_by (the

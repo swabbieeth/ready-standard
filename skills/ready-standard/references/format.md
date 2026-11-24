@@ -363,11 +363,13 @@ summary, columns`,
 `coordination?`, `triggers?`, `access?`, `view?`, `projection_of?`,
 `relationships?`, `volume?`.
 
-- `columns [{name, type, keys? (PK, FK, UK), fk? {entity, column, on_delete?,
-  on_update?}, nullable?, default?, check?, values?, generated?, visibility?,
-  rule?, indexes? (badges), constants?}]`. A column's `rule` says what the
-  column means and any rule the typed fields do not capture; it never opens by
-  restating `nullable`, `keys`, `fk`, `default`, or `check`.
+- `columns [{name, type, keys? (PK, FK, UK for database tables/views; ID, LINK
+  for non-database stores such as docs, spreadsheets, files, folders, or
+  inboxes), fk? {entity, column, on_delete?, on_update?}, nullable?, default?,
+  check?, values?, generated?, visibility?, rule?, indexes? (badges),
+  constants?}]`. A column's `rule` says what the column means and any rule the
+  typed fields do not capture; it never opens by restating `nullable`, `keys`,
+  `fk`, `default`, or `check`.
 - `column_groups [{name, display_id?, columns, summary?}]` and
   `derivations [{by, columns, text}]` (columns a function computes).
 - `primary_key` is an ordered composite key.

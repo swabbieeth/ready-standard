@@ -325,10 +325,12 @@ go in a supplementary file (limits in
 - [ ] `table` is the exact physical name, file/object path, or non-DB storage
       location (doc, spreadsheet, folder, inbox); `entity_kind` set; `summary`
       says what one item or row is.
-- [ ] Only product-significant columns, each with exact `name` and `type`, keys,
-      `nullable`, `default`, `values`, and a `rule` for meaning not captured by
-      typed fields. The `rule` opens with what the column means, never with
-      "Not null", "PK", or "FK to …" (`column.restates`).
+- [ ] Only product-significant columns or fields, each with exact `name` and
+      `type`, keys (`PK`/`FK`/`UK` on database tables and views; `ID`/`LINK` on
+      non-database stores such as docs, spreadsheets, files, folders, or
+      inboxes), `nullable`, `default`, `values`, and a `rule` for meaning not
+      captured by typed fields. The `rule` opens with what the column means,
+      never with "Not null", "PK", or "FK to …" (`column.restates`).
 - [ ] `fk` names an existing column on an existing entity, and each foreign key
       has a `relationships` entry with quoted cardinalities and a `label`.
 - [ ] Each index has one badge `id`, exact `columns`, `where`, `unique`,
