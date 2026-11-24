@@ -355,8 +355,10 @@ edges, so a step lists no sequences.
 
 ### entity
 
-`entity_kind?` (table, view, object, projection, external), `schema?`, `table`
-(physical name or object path template), `name, summary, columns`,
+`entity_kind?` (table, view, object, projection, external, document,
+spreadsheet, file, folder, inbox), `schema?`, `table` (physical table/view
+name, object/file path, or non-database workflow storage location), `name,
+summary, columns`,
 `column_groups?`, `derivations?`, `primary_key?`, `indexes?`, `checks?`,
 `coordination?`, `triggers?`, `access?`, `view?`, `projection_of?`,
 `relationships?`, `volume?`.

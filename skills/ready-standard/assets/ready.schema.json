@@ -1098,7 +1098,12 @@
             "view",
             "object",
             "projection",
-            "external"
+            "external",
+            "document",
+            "spreadsheet",
+            "file",
+            "folder",
+            "inbox"
           ]
         },
         "schema": {

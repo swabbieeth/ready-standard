@@ -1,6 +1,6 @@
 # Template: entity. Always shared; its lifecycle is the flow whose subject it is.
 # Required: ready, kind, id, table, name, summary, columns.
-# Optional: entity_kind (table | view | object | projection | external),
+# Optional: entity_kind (table | view | object | projection | external | document | spreadsheet | file | folder | inbox),
 #   schema, column_groups, derivations, primary_key, indexes, checks,
 #   coordination, triggers, access {rls, grants, readers, writers},
 #   view {source, security_invoker}, projection_of, volume,

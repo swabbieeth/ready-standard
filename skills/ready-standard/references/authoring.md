@@ -322,8 +322,9 @@ go in a supplementary file (limits in
       capability it serves, not a capability of its own.
 
 **entity**
-- [ ] `table` is the exact physical name; `entity_kind` set; `summary` says
-      what one row is.
+- [ ] `table` is the exact physical name, file/object path, or non-DB storage
+      location (doc, spreadsheet, folder, inbox); `entity_kind` set; `summary`
+      says what one item or row is.
 - [ ] Only product-significant columns, each with exact `name` and `type`, keys,
       `nullable`, `default`, `values`, and a `rule` for meaning not captured by
       typed fields. The `rule` opens with what the column means, never with
