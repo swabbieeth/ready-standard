@@ -43,26 +43,30 @@
 - **A sequence with its own trigger and an edge that runs it.** A sequence's
   `trigger` is only for one no edge runs (a schedule, an event, another
   system's call).
-- **Mixing journey and lifecycle steps** (`step.kind`): a `state` step in a
-  journey, or a `screen` step in a lifecycle.
+- **Non-`state` steps in a lifecycle** (`step.kind`): a `screen` or `task` step
+  in an entity lifecycle (journeys may freely use `state` steps alongside
+  `screen`, `task`, `decision`, `outcome`, and `error`).
+- **Filler approval box on a single-destination route:** adding an extra
+  "Awaiting approval" hexagon when approval simply lets one path proceed or
+  return. Put `gate: human_approval` + `approver` directly on the route; use an
+  amber `decision` hexagon (with `owner`) when human review routes to multiple
+  distinct destinations.
 - **An unreachable step** (`step.unreachable`): the first step has no entry,
   or an error step has no edge into it.
 - **A lifecycle copied onto the entity.** The lifecycle is a flow whose
   `subject` is the entity; the entity has no lifecycle or invariants fields.
 - **A step titled as its own move** (`step.trigger-title`): a step "Cast a
   vote" whose edge's trigger is "Cast vote", so the arrow repeats the box.
-  Boxes are states and arrows are moves: name the step for what the person
-  sees ("Ballot") and leave the verb to the trigger.
-- **An `action` step in a journey** (`step.action`): an action is the edge
-  between two states. Make the step the screen where the person acts. Time
-  the person spends away from the app is the gap between two steps, crossed by
-  an edge whose event trigger names what brings them back, such as "Walk
-  ends".
-- **A person's choice drawn as a decision** (`decision.action`): "Confirm
-  deletion" as a diamond with Delete and Keep branches. That is a confirmation
-  screen with a Delete edge and a Keep edge, each a person's trigger. A
-  `decision` is only where the product branches on a rule or a result, named
-  as a question, with guards or outcomes on its edges.
+  Name the step for what the subject sees or where work sits, and leave the
+  verb to the trigger.
+- **An `action` step in a journey** (`step.action`): use `task` for simple work
+  without a sequence, `sequence` for detailed multi-step/tool work, or a
+  `screen`/`state` whose edge carries the action.
+- **A UI choice drawn as an unowned decision** (`decision.action`): "Confirm
+  deletion" as an unowned diamond with Delete and Keep branches. That is a
+  confirmation `screen` with a Delete edge and a Keep edge. Use `decision`
+  either for rule/result branches (event triggers with guards/labels/outcomes)
+  or for actor-owned multi-destination human review/approval (`owner` set).
 - **A decision branch with no name** (`decision.branch`): an edge out of a
   decision with no `guard`, `label`, or `outcome`, so the reader cannot tell
   which result it follows.

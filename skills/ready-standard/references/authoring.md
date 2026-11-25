@@ -183,29 +183,27 @@ go in a supplementary file (limits in
 
 **step (journey)**
 - [ ] `flow`, `title`, and a `step_kind` that fits (no `capability`; a step
-      takes its flow's). Every step is a state: `screen` is what the person
-      sees on a UI surface, `task` is a human or agent work stage with no
-      dedicated screen, `approval` is an explicit human review or sign-off
-      gate, `system` is the app working while the person waits, `decision`
-      is where the product branches on a rule or a result, `outcome` is a
-      result, good or bad, that may end the journey or lead onward, `error`
-      is a visible failure. Avoid `action` in a journey
-      (`step.action`): what the person does is the trigger on an edge.
-- [ ] Optional `owner` names the `actor` or `system` responsible for completing
-      a `task`, `approval`, or other journey step; optional `order` (integer)
-      sets its display position when the parent flow omits `steps`.
-- [ ] The `title` names a state, as a noun or a place ("Email settings",
-      "Deletion confirmation"), never the move that leaves it: a title that
-      repeats an edge's trigger draws the arrow twice
+      takes its flow's). Choose flexibly from five visual roles: `screen` or
+      `state` (blue: UI surface or resting/intermediate/entity-status state;
+      journey `state` steps may also set `description`, `field`, and `value`),
+      `task` or `system` (purple: simple work stage; use a `sequence` when
+      detailed multi-step/tool/agent logic runs), `decision` (amber hexagon:
+      multi-destination rule branch or actor-owned human review/approval;
+      legacy `approval` also renders amber), `outcome` (green: positive end
+      state), and `error` (red: failure or negative end state). Avoid `action`
+      in a journey (`step.action`).
+- [ ] Optional `owner` names the `actor` or `system` responsible for this step
+      (omit on neutral states or endpoints); optional `order` (integer) sets its
+      display position when the parent flow omits `steps`.
+- [ ] The `title` avoids repeating its own outgoing trigger's name
       (`step.trigger-title`).
-- [ ] A person's choice between options (Delete or Keep, Yes or No) is a
-      `screen` with one edge per option, each with a person's trigger. A
-      `decision` is named as a question, and every edge leaving it carries a
-      `guard`, a `label`, or a sequence `outcome` (`decision.branch`) with an
-      event trigger, never a person's action (`decision.action`).
-- [ ] Time the person spends away from the app is not a step: it is the gap
-      between two steps, crossed by an edge whose event trigger names what
-      brings them back ("Walk ends").
+- [ ] A person's UI choice between options (Delete or Keep, Yes or No) is a
+      `screen` with one edge per option. A `decision` models either a rule or
+      result branch (every edge carries `guard`, `label`, or `outcome` with an
+      event trigger) or a multi-destination human review/approval (set `owner`,
+      and let action triggers name each path). For single-destination go/no-go
+      approval, put `gate: human_approval` + `approver` on the route instead of
+      adding an extra approval box.
 - [ ] `interface` names the surface it shows on; `presentation` when it is not
       a full screen.
 - [ ] `copy` quotes exact user-visible words with `{slot}` placeholders;
@@ -217,15 +215,19 @@ go in a supplementary file (limits in
       holds only what this step alone shows (`copy.repeated`).
 - [ ] `edges` cover every way out, and each names a trigger record; an
       outcome step with no way out has no `edges`. A decision branch has a
-      `label`; a condition is a `guard` in plain words, and the rules the move
-      applies are in the edge's `rules`. Use `channel: handoff` and `to_actor`
-      when handing work off across a channel to another actor or agent role.
+      `label` (or distinct action trigger when `owner` is set); a condition is a
+      `guard` in plain words, and the rules the move applies are in the edge's
+      `rules`. Use `gate: human_approval` + `approver` for single-destination
+      approval gates, and `channel: handoff`, `to_actor`, and `handoff_ref`
+      for pointer-only handoffs across actors/agents.
 - [ ] Each direction between two steps has its own trigger: the move back is
       "Go back" or "Cancel", not the trigger that came forward
       (`edge.both-ways`).
-- [ ] An edge that runs system work names its `sequence` and `outcome`, and
-      there is one edge per outcome of that sequence, all from this step with
-      the same trigger. Failures reach their own `error` steps that way.
+- [ ] An edge that runs detailed system, tool, or agent work names its
+      `sequence` and `outcome`, and there is one edge per outcome of that
+      sequence, all from this step with the same trigger (rendered once as a
+      full-size purple sequence node). Failures reach their own `error` steps
+      that way.
 - [ ] Moves that are rare, failures, or returns that change nothing (Cancel,
       Close, "Back to …") carry `secondary: true`; the main path stays
       unmarked.
@@ -247,8 +249,10 @@ go in a supplementary file (limits in
       and flags are rules, not states.
 
 **sequence**
-- [ ] `capability`, `title`, `summary`, and `outcomes` listing every way it
-      ends, each mapped to a step by an edge.
+- [ ] `capability`, `title`, `summary`, optional `owner` (actor or system id
+      primarily responsible for running the sequence; omit for pure system
+      sequences), and `outcomes` listing every way it ends, each mapped to a
+      step by an edge.
 - [ ] Run by edges, invoked by another sequence, or given a `trigger` record
       (schedule, event, or call) when nothing runs it.
 - [ ] Every participant key used by a message or note is listed once.

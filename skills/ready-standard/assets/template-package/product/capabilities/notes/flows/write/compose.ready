@@ -1,22 +1,24 @@
 # Template: journey step. When its flow lists steps, it must appear there;
 # otherwise order (integer) sets its display position. Takes capability from flow.
 # Required: ready, kind, id, flow, title,
-#   step_kind (screen | task | approval | action | decision | system | outcome | error).
-# A step is a state, titled for what the subject sees or where work sits; the
-#   move out of it is its edge's trigger. Use task for work without a UI screen
-#   and approval for an explicit review or sign-off gate. Avoid action in a
-#   journey, and use decision only where the product branches on a rule or result.
+#   step_kind (screen | state | task | approval | action | decision | system | outcome | error).
+# Five visual roles: purple = work (sequence nodes, task, system), blue = screen
+#   or state (resting/intermediate/status), amber = decision (multi-destination
+#   branch or actor-owned human review), green = positive outcome, red = error.
+#   Use gate: human_approval + approver on a route for single-destination sign-off.
 # Optional: order (integer), owner (actor or system id), edges (a final step
 #   has none), interface (the surface it shows on), presentation (screen |
 #   inline | sheet | dialog | toast | email | notification | external),
 #   platforms (ios | android | web | mobile | desktop), roles, copy {title,
-#   body, actions, hints}, sees, does, data [{entity, access (read | write),
-#   state (the id of a state step in that entity's lifecycle)}], rules.
+#   body, actions, hints}, sees, does, description/field/value (on state steps),
+#   data [{entity, access (read | write), state (the id of a state step in that
+#   entity's lifecycle)}], rules.
 # Edges: [{to (a step, or $return), trigger (a trigger id, always), guard
-#   (plain words), rules, label, sequence, outcome, channel (email | push |
-#   async | link | handoff), to_actor (intended actor id on handoff),
+#   (plain words), rules, label, sequence, outcome, gate (auto | human_approval),
+#   approver (actor id), channel (email | push | async | link | handoff),
+#   to_actor (intended actor id on handoff), handoff_ref (external pointer hint),
 #   platforms, roles, secondary (true)}]. The edges that run one sequence leave
-#   this step with one trigger, one edge per outcome.
+#   this step with one trigger, one edge per outcome, rendered as one purple node.
 # copy quotes user-visible words verbatim; sees and does describe.
 ready: 3
 kind: step

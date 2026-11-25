@@ -241,37 +241,42 @@ from steps whose `flow` names this flow, sorted by `step.order` then `id`),
 its capability from its flow.
 
 - **`step_kind`:**
-  - for a journey: `screen`, `task`, `approval`, `action`, `decision`,
+  - for a journey: `screen`, `state`, `task`, `approval`, `action`, `decision`,
     `system`, `outcome`, `error`;
   - for a lifecycle: `state`, with `initial?` and `final?`.
-- **Every step is a state; its edges are the moves.** A flow diagram reads as
-  boxes that are states and arrows that are what moves the subject on, so a
-  step is named for where the subject is or what it sees, never for what it
-  does. "State" here means a box in the diagram, any step; it is not the
-  `state` step kind, which only lifecycles use. In a journey:
-  - `screen` is what the person sees on a UI surface, named as a noun or a
-    place ("Email settings", "Deletion confirmation"). A person's choice
-    between options is a screen with one edge per option.
-  - `task` is a human or agent work stage that needs no dedicated UI screen
-    (for example, a delegated agent task or field-crew visit). It may name
-    its `owner` (actor or system id) and describe work in `does`.
-  - `approval` is an explicit human review or sign-off gate before work
-    proceeds (for example, manager variance review or external-action
-    approval). It may name its `owner` (actor or system id).
-  - `outcome` is a result state, good or bad ("Answer recorded", "Plan
-    inactive"); it may end the journey or lead onward.
-  - `error` is a visible failure the person can see and often recover from.
-  - `system` is the app working while the person waits ("Checking the
+- **Five flexible visual roles (plus full-size purple `sequence` nodes derived from edges):**
+  - `screen` (blue) is what the person sees on a UI surface, named as a noun or
+    a place ("Email settings", "Deletion confirmation"). A person's choice
+    between UI options is a screen with one edge per option.
+  - `state` (blue) is a resting, waiting, intermediate, or entity-status state
+    usable in either a journey or a lifecycle ("Invoice: Received", "Drift
+    found", "Awaiting team sign-off"). In journeys, `state` may carry `owner`,
+    `sees`, `does`, `description`, `field`, and `value` (and `data[].state`
+    when linking an entity lifecycle).
+  - `task` (purple) is a simple human or agent work stage with no dedicated UI
+    screen (for example, a delegated agent task, scheduled job, or field visit).
+    It may name its `owner` (actor or system id) and describe work in `does`.
+    When work spans multiple tools, systems, or branching outcomes, prefer a
+    `sequence` (which renders as a full-size purple node).
+  - `system` (purple) is brief in-app work while the person waits ("Checking the
     source").
-  - `decision` is only where the product branches without the person
-    choosing, on a rule or on a sequence's result. It is named as a question
-    ("Over the limit?"). Every edge leaving it carries a `guard`, a `label`,
-    or a sequence `outcome`, and their triggers are events, never a person's
-    action.
-  - `action` is accepted but discouraged: an action is an edge. A journey
-    shows where the subject is; time spent away is the gap between two steps,
-    crossed by an edge whose event trigger names what brings them back, such
-    as "Walk ends".
+  - `decision` (amber hexagon) is a multi-destination branch — either where the
+    product branches on a rule or result (named as a question, with `guard`,
+    `label`, or `outcome` on event edges) or a multi-destination human review or
+    approval (set `owner` to the reviewing actor; action triggers name the
+    distinct downstream paths).
+  - `approval` (amber hexagon) is accepted for explicit multi-destination human
+    review stages; for single-destination go/no-go approval, prefer
+    `gate: human_approval` and `approver` directly on the route instead of
+    adding an extra approval box.
+  - `outcome` (green) is a positive result or positive end state ("Production
+    updated", "Nothing found"). Use `state` (blue) for intermediate findings or
+    waiting queues that continue onward.
+  - `error` (red) is a visible failure or negative end state ("Missing scale
+    ticket", "Release held for a fix").
+  - `action` (purple) is accepted for compatibility and discouraged in journeys
+    (`step.action`): use `task` for simple work, `sequence` for detailed work,
+    or an edge trigger for a UI move.
 - **For a journey step:**
   - `owner?` (actor or system id responsible for completing the step),
     `interface?` (the surface it shows on), `presentation?` (screen, inline,
@@ -280,27 +285,33 @@ its capability from its flow.
   - `copy? {title?, body?, actions?, hints?}`, quoted verbatim with `{slot}`
     placeholders;
   - `sees?` and `does?` (lists), which describe and never quote;
+  - when `step_kind: state`, optional `description?`, `field?`, `value?`;
   - a `screen` step has at least one of `sees`, `does`, or `copy`; its
     `interface` alone does not say what happens at this moment, and words the
     surface already holds stay on the surface, not in the step's `copy`.
-- **For a lifecycle step:** `description?`, and the entity field and value that
-  hold the state (`field?`, `value?`).
+- **For a lifecycle step:** `initial?`, `final?`, `description?`, and the entity
+  field and value that hold the state (`field?`, `value?`).
 - **For both:** `order?` (integer; optional display order when the parent flow
   omits `steps`), `data? [{entity, access (read, write), state?}]`, where
   `state` is the id of a `state` step in that entity's lifecycle; `rules?`.
 - **`edges`** (optional; a final step has none) are `[{to | $return, trigger,
-  guard?, rules?, label?, sequence?, outcome?, channel? (email, push, async,
-  link, handoff), to_actor?, platforms?, roles?, secondary?}]`:
+  guard?, rules?, label?, sequence?, outcome?, gate? (auto, human_approval),
+  approver? (actor id), channel? (email, push, async, link, handoff),
+  to_actor? (actor id), handoff_ref?, platforms?, roles?, secondary?}]`:
   - `to` is a step, or `$return` to send the subject back where the flow
     began.
   - `trigger` is a trigger id. Every edge names a trigger record.
   - `sequence` names the sequence this move runs, and `outcome` names which of
     its outcomes leads to `to`. The edges that share a sequence all leave the
-    same step with the same trigger, one per outcome.
-  - A move with no system work has no `sequence`.
-  - `channel` marks a cross-channel move (`email`, `push`, `async`, `link`, or
-    `handoff`); `to_actor` (actor id) names the intended recipient role on a
-    handoff.
+    same step with the same trigger, one per outcome; flow diagrams collapse
+    them into one full-size purple sequence node (whether 1 outcome or many).
+  - A move with no detailed sequence work has no `sequence`.
+  - `gate` (`auto` or `human_approval`), `approver` (actor id), `channel`
+    (`email`, `push`, `async`, `link`, or `handoff`), `to_actor` (actor id), and
+    `handoff_ref` (plain-language external pointer description, never customer
+    data) define route boundaries and pointer-only handoffs. Use
+    `gate: human_approval` on single-destination routes that pause for go/no-go
+    sign-off.
   - `label` marks a decision branch ("Yes", "No"); `guard` states, in plain
     words, the condition under which the edge is taken; `rules` lists the
     rules the move applies.
@@ -309,14 +320,20 @@ its capability from its flow.
     part of the intent; diagrams hide it, and the steps only it reaches, until
     the reader asks for them. Leave the main path unmarked.
 
-The steps a sequence starts, ends at, or decides in are derived from these
-edges, so a step lists no sequences.
+Arrows are purely visual for humans (solid for human actions, dashed for system
+or automatic transitions, with compact amber approval gate and blue schedule
+pills). All route, gate, actor, record, and rule details live on the clickable
+step and sequence nodes. The steps a sequence starts, ends at, or decides in are
+derived from these edges, so a step lists no sequences.
 
 ### sequence
 
-`capability, title, summary, participants, items, outcomes`, plus `trigger?`,
-`parts?`, `part_of?`.
+`capability, title, summary, owner?, participants, items, outcomes`, plus
+`trigger?`, `parts?`, `part_of?`.
 
+- **`owner` (optional):** actor or system id primarily responsible for running
+  this sequence (for example, an agent role executing tool calls). Omit for
+  pure system sequences or when no single actor owns execution.
 - **`participants`:** actor, system, or interface ids, used as their own keys,
   or `{id (key), is?, label?}` lanes such as "Mobile app or web page". Messages
   and notes use participant keys.
@@ -545,12 +562,12 @@ is in [validation.md](validation.md).
 | `flow.empty` | E | A flow has no steps. |
 | `step.flow` | E | A step and its flow disagree. |
 | `step.unreachable` | W | No entry or edge reaches a step. |
-| `step.kind` | E | A journey step is a `state`, or a lifecycle step isn't. |
+| `step.kind` | E | A lifecycle step isn't `state` (journeys may use any step kind, including `state`). |
 | `step.trigger-title` | W | A step's title is the name of a trigger on one of its own edges, ignoring case, punctuation, and articles. The step names the state; the trigger names the move. |
-| `step.action` | W | An `action` step in a journey. Make it a screen whose edge carries the action, or a state for work done off-screen over time. |
-| `decision.action` | W | A decision step has an edge whose trigger is a person's action. A person's choice is a screen with one edge per option. |
+| `step.action` | W | An `action` step in a journey. Use `task` for simple work, `sequence` for detailed work, or a screen/state whose edge carries the action. |
+| `decision.action` | W | An unowned decision step has an edge whose trigger is a person's action. A person's UI choice is a screen with one edge per option, or set `owner` for a multi-destination human review decision. |
 | `edge.both-ways` | W | The same trigger moves the subject both ways between the same two steps. Give each direction its own trigger. Reported once per pair of steps and trigger. |
-| `decision.branch` | W | An edge leaving a decision step has no `guard`, `label`, or `outcome`, so the diagram cannot say which result it follows. |
+| `decision.branch` | W | An edge leaving a decision step has no `guard`, `label`, or `outcome` (exempt for human `action` triggers on an actor-owned decision), so the diagram cannot say which result it follows. |
 | `edge.trigger` | E | An edge has no trigger, or names something that isn't a trigger record. |
 | `edge.sequence` | E | An edge's `outcome` is not one of its sequence's outcomes. |
 | `edge.start` | E | The edges that run one sequence leave different steps or use different triggers. |

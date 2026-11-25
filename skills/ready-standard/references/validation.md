@@ -107,14 +107,13 @@ references it then reports `ref.missing`. Work from the top:
     - `text.repeated`: keep the sentence in the record that owns the fact and
       link that record from the others.
 15. **States-and-moves warnings:** `step.trigger-title`, `step.action`,
-    `decision.action`, `decision.branch`, `edge.both-ways`. A flow diagram reads as boxes that
-    are states and arrows that are moves. Rename the step for what the person
-    sees or where they are, and keep the verb on the trigger; turn an `action`
-    step into the screen where the person acts; turn a decision that offers
-    the person a choice into a screen with one edge per option; name each
-    decision branch with a guard, label, or outcome; and give the way back
-    its own trigger. Keep ids stable; change titles and trigger
-    names (see [mistakes.md](mistakes.md#flows-and-edges)).
+    `decision.action`, `decision.branch`, `edge.both-ways`. Rename a step whose
+    title repeats its own trigger; replace an `action` step with a `task`,
+    `sequence`, or `screen`/`state`; turn an unowned UI-choice `decision` into
+    a `screen` (or set `owner` if it is a multi-destination human review
+    decision); name each non-action decision branch with a guard, label, or
+    outcome; and give the way back its own trigger. Keep ids stable; change
+    titles and trigger names (see [mistakes.md](mistakes.md#flows-and-edges)).
 16. **DCL warnings:** `dcl.same` means a capability repeats the product
     default's level. Remove the capability's duplicate `dcl` so it uses the
     default; a separate basis alone does not justify repeating the level.

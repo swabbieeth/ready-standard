@@ -1,8 +1,10 @@
 # Template: sequence. What runs between two steps, across systems.
 # Required: ready, kind, id, capability, title, summary, participants, items,
 #   outcomes [{id, label}] (the ways it can end; flow edges map each to a step).
-# Optional: trigger (a trigger id, only for a sequence no edge runs: a
-#   schedule, an event, or another system's call), parts / part_of.
+# Optional: owner (actor or system id primarily responsible for running this
+#   sequence; omit for pure system sequences), trigger (a trigger id, only for
+#   a sequence no edge runs: a schedule, an event, or another system's call),
+#   parts / part_of.
 # Participants: an actor, system, or interface id, or {id (key), is, label}.
 #   Messages and notes use participant keys.
 # Items: msg, note, alt, opt, loop, par, break, transaction, continue. An alt

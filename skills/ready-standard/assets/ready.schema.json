@@ -636,6 +636,17 @@
                 "type": "string",
                 "minLength": 1
               },
+              "gate": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "human_approval"
+                ]
+              },
+              "approver": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
               "channel": {
                 "type": "string",
                 "enum": [
@@ -649,6 +660,10 @@
               "to_actor": {
                 "type": "string",
                 "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
+              },
+              "handoff_ref": {
+                "type": "string",
+                "minLength": 1
               },
               "platforms": {
                 "type": "array",
@@ -930,6 +945,10 @@
         "title": {
           "type": "string",
           "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?:\\.[a-z0-9]+(?:[-_][a-z0-9]+)*)*$"
         },
         "participants": {
           "type": "array",

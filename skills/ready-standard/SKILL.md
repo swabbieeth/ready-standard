@@ -34,14 +34,23 @@ intent.
   several capabilities are shared, and consumers link to them by id. A
   channel (a plugin, a CLI, a second app) is never a capability.
 - **Flows have a subject.** An actor subject makes a journey; an entity
-  subject makes a lifecycle with `state` steps. Links between flows are
-  derived from entries, shared edge sequences, and lifecycle state references.
+  subject makes a lifecycle with `state` steps. Journeys use five flexible
+  visual roles: purple for work (`sequence` nodes derived from edges, or simple
+  `task`/`system` steps), blue for `screen` and `state` (resting, intermediate,
+  or entity-status states), amber hexagon for multi-destination `decision`
+  branches (including actor-owned human reviews), green for positive `outcome`
+  endpoints, and red for `error` failures. Single-destination go/no-go approval
+  lives on the route (`gate: human_approval`, `approver`). Assign `owner`
+  flexibly on steps, sequences, both, or neither depending on where
+  responsibility sits. Links between flows are derived from entries, shared
+  edge sequences, and lifecycle state references.
 - **DCL follows use.** A capability uses its own DCL, else the product default,
   else none. A shared record uses the highest effective DCL of the capabilities
   that use it. See [references/principles.md](references/principles.md#development-complexity-level-dcl).
-- **Every edge names a trigger record.** An edge that runs system work
-  carries `sequence` and `outcome`, one edge per outcome, all leaving the same
-  step with the same trigger. Steps list no sequences; that is derived.
+- **Every edge names a trigger record.** An edge that runs detailed system,
+  tool, or agent work carries `sequence` and `outcome`, one edge per outcome,
+  all leaving the same step with the same trigger; diagrams render the sequence
+  once as a full-size purple node. Steps list no sequences; that is derived.
 - **Rule kinds.** A rule is a `decision`, `invariant`, `policy`, or `quality`,
   and it is applied somewhere: through the `rules` field of a step, an edge,
   a sequence message, or another rule; a policy also by its own `sequence`;
