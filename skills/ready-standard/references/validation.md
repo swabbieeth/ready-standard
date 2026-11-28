@@ -3,8 +3,9 @@
 ## Run it
 
 The validator for a Ready Logic Package (RLP) is Ready Room's loader,
-published as the `@readyroom/ready` package (Node 24 or later). `<repo>` is the
-directory that contains `product/`.
+published as the `@readyroom/ready` package (Node 24 or later; `@readyroom/ready@1.3.0`
+and later support `sources`, generalized `rule.applies_to`, and `policy.otherwise`).
+`<repo>` is the directory that contains `product/`.
 
 ```sh
 npx @readyroom/ready validate <repo>
@@ -136,7 +137,8 @@ Passing validation means the graph is well formed, not that the intent is
 right. It does not check:
 
 - that the content is present tense and free of history and task language;
-- that a rule is applied by a process rather than merely referenced;
+- that a rule's application point, inputs, and effect on the next step, state,
+  or outcome are clear in the applying record (beyond structural wiring);
 - that capabilities are outcomes rather than channels, teams, or layers;
 - that a shared record is really shared, or a local one really local, beyond
   `home.shared`;
@@ -156,6 +158,8 @@ Those are the reviewer's job; see [principles.md](principles.md) and
 ## In CI
 
 A repository with a ready package should run the validator in CI (Ready Room
-runs it, and `app/test/intent-readyroom.test.ts` checks the same). Any other
-repository adds a job step `npx @readyroom/ready@<version> validate .`, pinning
-the version so a format change lands as a deliberate upgrade.
+validates its canonical Room Logic in its cloud room and tests the loader in
+`app/test/intent-records.test.ts`). Any other repository adds a job step
+`npx @readyroom/ready@<version> validate .` (use `1.3.0` or later for
+`sources`, generalized `applies_to`, and `policy.otherwise`), pinning the
+version so a format change lands as a deliberate upgrade.

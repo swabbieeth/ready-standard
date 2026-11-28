@@ -139,9 +139,10 @@ Every record: `ready: 3`, `kind`, a lowercase `id` that starts with its
 capability (behavior) or its kind (shared), no unknown fields, no empty
 strings, present tense, no history or task words, a `summary` of one sentence
 of at most 160 characters that says more than the title where the kind has
-one, short `notes`, and a source small enough to read; long lists and examples
-go in a supplementary file (limits in
-[format.md](format.md#fields-every-record-has)).
+one, short `notes`, `sources` for any authoritative external document kept
+outside Ready Room (pointer-only, never uploaded), and a source small enough
+to read; long in-package lists and examples go in a supplementary file in
+`files` (limits in [format.md](format.md#fields-every-record-has)).
 
 **product** (one, at `product/product.ready`)
 - [ ] `name` (40 characters or fewer), `summary`, `outcome` (300 or fewer),
@@ -286,36 +287,48 @@ go in a supplementary file (limits in
 **rule**
 - [ ] `rule_kind`, `title`, and a one-sentence `summary` saying what it
       decides or requires.
-- [ ] Logic for its kind: a `decision` has `when`/`then`/`otherwise`, a
+- [ ] Logic for its kind: a `decision` has `when`/`then`/`otherwise?`, a
       `decision` graph, a `table`, or a `judge`; an `invariant` has `holds` and
-      `scope`; a `policy` has `whenever` and `then`, and `sequence` when one
-      carries it out; a `quality` has `applies_to`, `measure`, and `target`.
-- [ ] A decision or policy rule is listed in the `rules` of a step, an edge,
-      a message, or an applied rule; a policy may instead be applied by its own
-      `sequence` (no orphans).
+      `scope?` (or `applies_to?`); a `policy` has `whenever` and `then` (with
+      `otherwise?` and `sequence?` when one carries it out); a `quality`
+      has `applies_to`, `measure`, `target`, and `scope?`.
+- [ ] Every rule is applied somewhere: list it in the `rules` of a step, an
+      edge, a sequence message or note, or an applied rule, or name the steps,
+      flows, sequences, interfaces, or entities it governs directly in its own
+      `applies_to` (a policy may also apply through its `sequence`; an
+      invariant through its `scope`). No orphans.
+- [ ] When thresholds, matrices, or policy clauses live in an external company
+      document outside Ready Room, point to that document in `sources`
+      (`name`, `location?`, `section?`, `owner?`, `version?`, `kind?`) instead
+      of copying mutable numbers into the rule title or prose.
 - [ ] `constants` links the constants it uses; `constraints` hold hard or soft
-      limits as `{text, hard}`.
+      limits as `{text, hard?}`.
 - [ ] `inputs` with sources; `default` for the no-match outcome; `precedence`
       when order matters.
 - [ ] `decision` edges name existing node ids; `table` rows match the columns.
 - [ ] Each `decision` node's records are in its `refs`, and its `text` names
       them in words (`text.ref-id`).
 - [ ] A `judge` names its evidence, output shape, gate, and prompt file.
-- [ ] `quality` `measure`, `scope`, and `target` are concrete and measurable.
+- [ ] `quality` `measure`, `scope?`, and `target` are concrete and measurable.
 - [ ] `capability` only when one capability uses it; logic used by one message
       only stays in that message instead.
 
 **interface (surface)**
 - [ ] `interface_kind: surface`, `name`, `summary`, `surface_kind`; `parent`
       for a section or dialog inside another surface; `system`, `route`,
-      `audience` where known.
+      `audience`, `boundary` (`internal`, `inbound`, `outbound`, or
+      `bidirectional` — marks an external human endpoint when crossing the room
+      boundary) where known.
 - [ ] `mockup` names an exact frame, file, or version when a design is binding.
 - [ ] Describes content and states, not layout or visual styling.
 - [ ] No operation fields (`interface.fields`).
 
 **interface (operation)**
-- [ ] `interface_kind: operation`, `operation_kind`, `name` in plain words, and
-      `http`, `code`, or the tool or command name callers use.
+- [ ] `interface_kind: operation`, `operation_kind`, `name` in plain words,
+      `boundary` (`internal`, `inbound`, `outbound`, or `bidirectional` — marks
+      an external agent or system endpoint when crossing the room boundary)
+      where applicable, and `http`, `code`, or the tool or command name callers
+      use.
 - [ ] `params` with `type` and `source`; `returns`; every refusal in `errors`
       with `code`, `status`, `when`, and `copy` when the user sees it.
 - [ ] Called by a message's `interface`; no surface fields (`interface.fields`).

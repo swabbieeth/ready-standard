@@ -5,7 +5,7 @@
 #   template (optional starter template identifier), labels ({key: label}
 #   vocabulary overrides), boundary {text, includes, excludes}, exclusions,
 #   measures, dcl {level 1-10, basis}, plus the common fields
-#   (display_id, rationale, notes, files, tags).
+#   (display_id, rationale, notes, files, sources, tags).
 # dcl is the optional default; a capability can set its own.
 # Keep it outward-facing: no rules, gates, or algorithms here.
 ready: 3

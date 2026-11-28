@@ -1,7 +1,9 @@
 # Template: interface with interface_kind operation (for programs and agents).
 # A sequence message calls it with msg.interface.
 # Required: ready, kind, id, interface_kind, name, summary.
-# Optional: system, audience (actors), code.
+# Optional: system, audience (actors), boundary (internal | inbound | outbound |
+#   bidirectional — marks an external agent/system endpoint when crossing the
+#   room boundary), code.
 # Operation fields: operation_kind (endpoint | rpc | mcp_tool | mcp_resource |
 #   cli_command | webhook | function), params [{name, type, source}], returns,
 #   errors [{code, status, when, copy}], http {method, path}, auth.

@@ -53,8 +53,15 @@ intent.
   once as a full-size purple node. Steps list no sequences; that is derived.
 - **Rule kinds.** A rule is a `decision`, `invariant`, `policy`, or `quality`,
   and it is applied somewhere: through the `rules` field of a step, an edge,
-  a sequence message, or another rule; a policy also by its own `sequence`;
-  quality and invariant rules through `applies_to` or `scope`.
+  a sequence message or note, or another rule, or directly through the rule's
+  own `applies_to` (`step`, `flow`, `sequence`, `interface`, or `entity`); a
+  policy may also apply through its `sequence` and carry optional `otherwise`,
+  and an invariant may apply through `scope`.
+- **External sources stay external.** Point records at authoritative company
+  documents kept outside Ready Room (rate cards, playbooks, SOPs, spreadsheets)
+  via `sources` (`name`, `location?`, `section?`, `owner?`, `version?`,
+  `kind?`) rather than uploading them into `files` or copying mutable values
+  into prose.
 - **Interfaces.** Surfaces are for people and operations for programs and
   agents. A step shows on a surface; a message calls an operation.
 - **Plain words first.** Titles, summaries, step text, copy, guards, labels,
@@ -76,8 +83,9 @@ intent.
 
 1. **Find the package and the validator.** The package is `<repo>/product/`.
    Validate with `npx @readyroom/ready validate <repo>` (Node 24+, no Ready
-   Room checkout needed). Follow the repository's own `AGENTS.md` if it names
-   a command.
+   Room checkout needed; `@readyroom/ready@1.3.0+` supports `sources`,
+   generalized `applies_to`, and `policy.otherwise`). Follow the repository's
+   own `AGENTS.md` if it names a command.
 2. **Read before changing.** Start from `product/product.ready`, then the
    capability's `capability.ready` and its flows, steps, sequences, rules, and
    triggers, then the shared records they link. For a readable view, export

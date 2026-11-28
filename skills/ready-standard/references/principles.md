@@ -104,22 +104,30 @@ record kind.
 
 ## No orphan logic
 
-- Every decision or policy rule is applied by a process, through a `rules`
-  field: a step's, an edge's, a sequence message's or note's, or another rule's
-  that is itself applied. A policy is also applied by its own `sequence`.
-  Trace the chain to a concrete trigger. Rules that only reference each other
-  do not count.
-- The validator's `rule.orphan` check accepts any reference. The principle is
-  stricter: the application point, the inputs, and how the result changes the
-  next step, state, or outcome must be visible in the applying record.
-- Quality rules apply through `applies_to`; invariant rules through `scope`.
-  An invariant states what is always true of the entities or flows it covers;
-  a policy states what follows whenever an event or state occurs, and names
-  the sequence that carries it out when there is one.
+- Every rule (`decision`, `policy`, `invariant`, or `quality`) is applied
+  somewhere: through a `rules` field (a step's, an edge's, a sequence message's
+  or note's, or another rule's that is itself applied) OR directly through its
+  own `applies_to` (`step`, `flow`, `sequence`, `interface`, or `entity`). In
+  addition, a `policy` may apply through its own `sequence`, and an `invariant`
+  through its own `scope`. Trace the chain to a concrete trigger or target;
+  rules that only reference each other do not count.
+- The validator's `rule.orphan` check verifies concrete application roots
+  (step, edge, sequence message or note `rules`, valid `applies_to` targets,
+  `policy.sequence`, `invariant.scope`, and rules chained from them — not
+  arbitrary references such as graph `refs`). The principle goes further: the
+  application point, the inputs, and how the result changes the next step,
+  state, or outcome must be visible in the applying record.
+- A `quality` rule always declares `applies_to` to name the steps, flows,
+  sequences, interfaces, or entities it measures; an `invariant` states what is
+  always true of its `scope` or `applies_to` targets; a `policy` states what
+  follows whenever an event or state occurs (with optional `otherwise` and
+  `sequence` when one carries it out).
 - Put a process-local gate directly in the sequence (`guards`, an `alt` branch,
   `results`) or on the edge (`guard`), in plain words. When the gate is a rule
-  record, list it in that edge's or message's `rules`. Create a rule record only for logic that
-  needs its own home: it is reused, or too large for one message.
+  record, list it in that edge's or message's `rules` (or target the step,
+  flow, sequence, interface, or entity in `applies_to`). Create a rule record
+  only for logic that needs its own home: it is reused, or too large for one
+  message.
 - Every trigger record is used by an edge or a sequence; every interface is
   shown by a step or called by a message.
 

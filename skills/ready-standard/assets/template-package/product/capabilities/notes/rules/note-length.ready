@@ -1,16 +1,19 @@
 # Template: rule (rule_kind decision). It names its capability because only
 # this capability uses it; a rule used by several capabilities is shared.
 # Required: ready, kind, id, rule_kind, title, summary, and the logic for its kind:
-#   decision: when / then / otherwise, a decision graph {nodes, edges}, a table
-#     {columns, rows}, or a judge {evidence, output, gate, prompt}; optional
+#   decision: when / then / otherwise?, a decision graph {nodes, edges}, a table
+#     {columns, rows}, or a judge {evidence, output, gate?, prompt?}; optional
 #     default, precedence, inputs, params, calculations, sets.
-#   invariant: holds, scope.   policy: whenever, then, sequence.
-#   quality: applies_to, measure, target, scope.
-# Optional: capability, rules (rules this rule applies), constants,
-#   constraints [{text, hard}].
-# A decision or policy rule must be applied through the rules field of a
-# step, an edge, a sequence message, or another rule; a policy also by its
-# own sequence.
+#   invariant: holds, scope? (or applies_to?).
+#   policy: whenever, then, otherwise?, sequence?.
+#   quality: applies_to, measure, target, scope?.
+# Optional: capability, applies_to (steps, flows, sequences, interfaces, or
+#   entities this rule governs), rules (rules this rule applies), constants,
+#   constraints [{text, hard?}], sources (authoritative external docs kept
+#   outside Ready Room).
+# Every rule must be applied through the rules field of a step, an edge, a
+# sequence message or note, or another rule, or directly via its own applies_to
+# (a policy also by its own sequence; an invariant also by its scope).
 ready: 3
 kind: rule
 id: notes.note-length
@@ -24,3 +27,9 @@ then: The save is refused as too long and the editor keeps the text
 otherwise: The note is saved
 constants:
   - constant.max-length
+sources:
+  - name: Writing guidelines
+    location: docs/writing-guidelines.md
+    section: "§1"
+    owner: Product
+    kind: policy_doc

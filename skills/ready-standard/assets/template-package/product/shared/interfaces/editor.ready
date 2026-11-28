@@ -1,7 +1,9 @@
 # Template: interface with interface_kind surface (for people). A step shows on
 # it with step.interface.
 # Required: ready, kind, id, interface_kind, name, summary.
-# Optional: system, audience (actors), code.
+# Optional: system, audience (actors), boundary (internal | inbound | outbound |
+#   bidirectional — marks an external human endpoint when crossing the room
+#   boundary), code.
 # Surface fields: surface_kind (app | page | screen | section | dialog | sheet |
 #   email | notification | provider), parent, route, platforms,
 #   elements [{name, description, states, copy}], states,

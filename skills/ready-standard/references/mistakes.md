@@ -189,8 +189,11 @@
   `state: saved` instead of `state: notes.note.saved`.
 - **Unquoted cardinality or inverted sides.** `from_card` is the side of the
   entity that holds the relationship.
-- **Supplementary paths.** `files: [{path: files/x.ts}]` must be
-  `product/files/x.ts`, and the extension must be one the loader reads.
+- **Supplementary paths vs. external sources.** `files: [{path: files/x.ts}]`
+  must be `product/files/x.ts`, and the file must live inside the package with
+  an allowed extension (`ref.file`). Authoritative company documents that stay
+  outside Ready Room (SOPs, rate cards, playbooks, spreadsheets) belong in
+  `sources`, never in `files` and never pasted as raw filenames into prose.
 - **A supplementary file no record names** (`file.unreferenced`). A file
   dropped under `product/files/` and never listed is read by nobody. List it in
   `files` on the record it supports, or remove it.

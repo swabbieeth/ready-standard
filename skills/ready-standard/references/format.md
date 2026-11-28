@@ -134,7 +134,8 @@ always shared.
 | `summary` | One sentence, at most 160 characters, that says more than the title. |
 | `rationale` | Why it is shaped this way (Markdown). |
 | `notes` | Context: scope, terms, references (Markdown), at most 700 characters. Never behavior a typed field could hold. |
-| `files` | Supplementary files: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. Every supplementary file is named by some record. |
+| `files` | Supplementary files stored inside `product/`: `{path, title?, role?}`; `role` is contract, prompt, mockup, config, schema, doc, or example. Every supplementary file is named by some record. |
+| `sources` | Authoritative external documents kept outside Ready Room (pointer-only, never uploaded): `{name, location?, section?, owner?, version?, kind?}`; `kind` is `policy_doc`, `rate_card`, `playbook`, `sop`, `spreadsheet`, `repo_doc`, `runbook`, `contract_template`, or `other`. |
 | `tags` | `{tag, text}` annotations with no dedicated field. |
 
 A record's source stays within 12,000 characters; long lists and examples go
@@ -420,7 +421,9 @@ diagram spanning several tables, and for lettered data diagrams.
 ### interface
 
 `interface_kind` (`surface` or `operation`), `name, summary`, `system?`,
-`audience?` (actors), `code?`.
+`audience?` (actors), `boundary?` (`internal`, `inbound`, `outbound`, or
+`bidirectional` — marks external ports crossing the room boundary: a `surface`
+is a human endpoint; an `operation` is an agent or system endpoint), `code?`.
 
 - **A surface** (for people) has `surface_kind` (app, page, screen, section,
   dialog, sheet, email, notification, provider), `parent?` (a surface),
@@ -461,20 +464,21 @@ the edge.
 ### rule
 
 `rule_kind, title, summary`, `capability?` (only when used in one
-capability), `rules?` (rules this rule applies), `constants?`, `constraints?
-[{text, hard?}]`, plus the logic for its kind:
+capability), `applies_to?` (steps, flows, sequences, interfaces, or entities
+this rule governs), `rules?` (rules this rule applies), `constants?`,
+`constraints? [{text, hard?}]`, plus the logic for its kind:
 
 | `rule_kind` | Logic |
 | --- | --- |
-| `decision` | `when` / `then` / `otherwise`, a `decision` graph, a `table {columns, rows}`, or a `judge {evidence, output, gate?, prompt? (file path)}`; with `default?`, `precedence?`, `inputs?`, `params? [{name, value, unit?, source?}]`, `calculations? [{name, expr, notes?}]`, `sets? [{name, members}]` |
-| `invariant` | `holds` (what is always true), `scope` (entities or flows it covers) |
-| `policy` | `whenever` (an event or state), `then` (what follows), `sequence?` (the sequence that carries it out) |
-| `quality` | `applies_to` (flows, sequences, or interfaces), `measure`, `target`, `scope?` |
+| `decision` | `when` / `then` / `otherwise?`, a `decision` graph, a `table {columns, rows}`, or a `judge {evidence, output, gate?, prompt? (file path)}`; with `default?`, `precedence?`, `inputs?`, `params? [{name, value, unit?, source?}]`, `calculations? [{name, expr, notes?}]`, `sets? [{name, members}]` |
+| `invariant` | `holds` (what is always true), `scope?` (entities or flows it covers) or `applies_to?` (at least one of `scope` or `applies_to` is required) |
+| `policy` | `whenever` (an event or state), `then` (what follows), `otherwise?` (fallback when the condition does not apply), `sequence?` (the sequence that carries it out) |
+| `quality` | `applies_to` (required; steps, flows, sequences, interfaces, or entities), `measure`, `target`, `scope?` |
 
 Every rule is applied somewhere: through the `rules` field of a step, an
-edge, a sequence message or note, or another rule. A policy is also applied by
-its own `sequence`. Quality and invariant rules apply through their
-`applies_to` or `scope`.
+edge, a sequence message or note, or another rule, or directly via the rule's
+own `applies_to`. A policy can also apply through its own `sequence`, and an
+invariant through its `scope`.
 
 ### actor
 
@@ -526,6 +530,9 @@ stays in records, where it is typed and checked.
 
 Code is never copied into the RL. Refer to it with `code` paths and `call`,
 and to code-owned config with `source` (`data/crawl_limits.yml#max_pages`).
+Authoritative company documents that stay outside Ready Room (rate cards,
+playbooks, SOPs, policy docs, spreadsheets) are referenced by pointer in
+`sources`, never uploaded into `files` and never duplicated into prose.
 
 ## Validation
 
@@ -575,7 +582,7 @@ is in [validation.md](validation.md).
 | `sequence.outcome` | W | A sequence outcome that no edge maps to a step. |
 | `sequence.unreached` | W | No edge runs the sequence, no sequence invokes it, and it has no trigger. |
 | `rule.empty` | E | A rule has no logic for its kind. |
-| `rule.orphan` | E | Nothing applies a decision or policy rule through a `rules` field (or, for a policy, its `sequence`). |
+| `rule.orphan` | E | Nothing applies a decision or policy rule through a `rules` field (step, edge, sequence message or note, or applied rule), its own `applies_to`, or (for a policy) its `sequence`. |
 | `rule.decision` | E | A decision graph refers to a node that doesn't exist. |
 | `entity.column` | E | `primary_key` or a column `fk` names an unknown column. |
 | `ops.target` | E | A data operation has neither `entity` nor `path`. |
